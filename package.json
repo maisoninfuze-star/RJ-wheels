@@ -1,0 +1,10 @@
+{
+  "name": "rj-welding-wheels-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "images": "python3 scripts/images.py",
+    "build": "node build.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}

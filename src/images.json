@@ -1,0 +1,78 @@
+{
+  "amg": {
+    "post": "DF0hLpYJIYX",
+    "w": 1080,
+    "h": 1080,
+    "widths": [
+      480,
+      800,
+      1080
+    ]
+  },
+  "bmw-650i": {
+    "post": "DJ8IXVWxl1z",
+    "w": 1080,
+    "h": 1920,
+    "widths": [
+      480,
+      800,
+      1080
+    ]
+  },
+  "audi": {
+    "post": "DJsXzgPJaCP",
+    "w": 1080,
+    "h": 1349,
+    "widths": [
+      480,
+      800,
+      1080
+    ]
+  },
+  "bmw-satin": {
+    "post": "DJUTpASRa8S",
+    "w": 640,
+    "h": 1136,
+    "widths": [
+      480,
+      640
+    ]
+  },
+  "booth": {
+    "post": "DGPlFznuNDa",
+    "w": 720,
+    "h": 900,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "lip": {
+    "post": "DIPaR-BpY1j",
+    "w": 720,
+    "h": 726,
+    "widths": [
+      480,
+      720
+    ]
+  },
+  "black-spoke": {
+    "post": "DFTiH1DpInY",
+    "w": 1080,
+    "h": 1350,
+    "widths": [
+      480,
+      800,
+      1080
+    ]
+  },
+  "silver": {
+    "post": "C7aFGRJJVNU",
+    "w": 720,
+    "h": 900,
+    "widths": [
+      480,
+      720
+    ]
+  }
+}

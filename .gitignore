@@ -1,0 +1,17 @@
+# Build output (Vercel runs `node build.mjs`)
+dist/
+node_modules/
+.DS_Store
+.claude/
+
+# Unused generation takes and scratch material (kept locally only)
+art/hero/*
+!art/hero/frame-a.png
+!art/hero/frame-phone-a.png
+!art/hero/takeA-spray.mp4
+!art/hero/takeA-phone-loop.mp4
+research/contact/
+research/legacy/
+research/instagram/*.jpg
+research/instagram/urls.txt
+research/instagram/embed_*.html
