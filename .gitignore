@@ -15,3 +15,7 @@ research/legacy/
 research/instagram/*.jpg
 research/instagram/urls.txt
 research/instagram/embed_*.html
+
+# Finish masters: keep only the selected renders
+!art/finishes/
+art/finishes/master-b.png

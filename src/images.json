@@ -74,5 +74,75 @@
       480,
       720
     ]
+  },
+  "illus-straightening": {
+    "post": null,
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-welding": {
+    "post": null,
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-crack": {
+    "post": null,
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-curb": {
+    "post": null,
+    "w": 1200,
+    "h": 896,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-oven": {
+    "post": null,
+    "w": 1200,
+    "h": 1500,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-booth": {
+    "post": null,
+    "w": 1200,
+    "h": 679,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
+  },
+  "illus-booth-tall": {
+    "post": null,
+    "w": 1200,
+    "h": 2122,
+    "widths": [
+      480,
+      800,
+      1200
+    ]
   }
 }

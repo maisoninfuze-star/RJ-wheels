@@ -405,3 +405,167 @@ if (form) {
     catch { getSelection().selectAllChildren($('[data-ready-text]', form)); }
   });
 }
+
+// ---------- AI booking assistant (demo): loaded on first use ----------
+const assistantUrl = new URL('./assistant.js' + new URL(import.meta.url).search, import.meta.url).href;
+document.addEventListener('click', async (e) => {
+  const a = e.target.closest('[data-assistant]');
+  if (!a) return;
+  e.preventDefault();
+  const m = await import(assistantUrl);
+  m.open({ finish: a.dataset.assistantFinish || undefined, from: a });
+});
+$$('.as-launch').forEach((b) => { b.hidden = false; });
+(window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => {
+  const l = document.createElement('link');
+  l.rel = 'modulepreload';
+  l.href = assistantUrl;
+  document.head.append(l);
+});
+
+// ---------- finish configurator ----------
+const cf = $('[data-configurator]');
+if (cf) {
+  const sw = $$('.cf-swatch', cf);
+  const imgs = $$('[data-finish-img]', cf);
+  const tag = $('[data-cf-tag]', cf);
+  const note = $('[data-cf-note]', cf);
+  const cta = $('[data-cf-cta]', cf);
+  const select = (b, focus) => {
+    sw.forEach((x) => { const on = x === b; x.setAttribute('aria-checked', String(on)); x.tabIndex = on ? 0 : -1; });
+    imgs.forEach((p) => p.classList.toggle('on', p.dataset.finishImg === b.dataset.finish));
+    tag.textContent = b.dataset.name;
+    note.textContent = b.dataset.note;
+    cta.dataset.assistantFinish = b.dataset.finish === 'raw' ? '' : b.dataset.name;
+    if (focus) b.focus();
+  };
+  sw.forEach((b, i) => {
+    b.addEventListener('click', () => select(b));
+    b.addEventListener('keydown', (e) => {
+      const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      select(sw[(i + d + sw.length) % sw.length], true);
+    });
+  });
+  select(sw.find((b) => b.getAttribute('aria-checked') === 'true') || sw[0]);
+
+  // Subtle 3D tilt that follows the pointer (desktop only).
+  const stage = $('[data-cf-stage]', cf);
+  const tilt = $('[data-cf-tilt]', cf);
+  if (finePointer && !reduced && stage && tilt) {
+    stage.addEventListener('pointermove', (e) => {
+      const r = stage.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      tilt.style.transform = `rotateY(${(x * 14).toFixed(2)}deg) rotateX(${(-y * 10).toFixed(2)}deg)`;
+      stage.style.setProperty('--gx', `${(x + 0.5) * 100}%`);
+      stage.style.setProperty('--gy', `${(y + 0.5) * 100}%`);
+    });
+    stage.addEventListener('pointerleave', () => { tilt.style.transform = ''; });
+  }
+}
+
+// ---------- premium motion: GSAP + ScrollTrigger + Lenis (skipped for reduced motion) ----------
+const G = window.gsap;
+const ST = window.ScrollTrigger;
+if (G && ST && !reduced) {
+  G.registerPlugin(ST);
+  const html = document.documentElement;
+
+  // Smooth scrolling on mouse/trackpad devices; touch keeps native scrolling.
+  if (window.Lenis && finePointer) {
+    const lenis = new window.Lenis({ lerp: 0.1 });
+    lenis.on('scroll', ST.update);
+    G.ticker.add((time) => lenis.raf(time * 1000));
+    G.ticker.lagSmoothing(0);
+    if (html.classList.contains('intro')) {
+      lenis.stop();
+      const go = () => lenis.start();
+      document.addEventListener('rj:intro-done', go, { once: true });
+      setTimeout(go, 6000);
+    }
+    const stopWhen = new MutationObserver(() => {
+      const locked = html.classList.contains('as-lock') || document.body.classList.contains('menu-open') || $('[data-lightbox]')?.open;
+      if (locked) lenis.stop(); else lenis.start();
+    });
+    stopWhen.observe(html, { attributes: true, attributeFilter: ['class'] });
+    stopWhen.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      const id = a?.getAttribute('href');
+      if (!id || id === '#' || id === '#main') return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -90 });
+    });
+  }
+
+  // Red hairline that tracks reading progress.
+  G.to('[data-progress]', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+
+  // Hero: copy drifts up and the film pushes in as you leave it.
+  const heroEl = $('.hero');
+  if (heroEl) {
+    const st = { trigger: heroEl, start: 'top top', end: 'bottom top', scrub: true };
+    G.to('.hero-copy', { yPercent: -14, autoAlpha: 0.2, ease: 'none', scrollTrigger: st });
+    G.to('.hero-media', { scale: 1.08, ease: 'none', scrollTrigger: { ...st } });
+  }
+
+  // Images open like a shutter as they enter.
+  G.utils.toArray('.reveal-media').forEach((el) => {
+    const trig = { trigger: el, start: 'top 85%' };
+    G.fromTo(el, { clipPath: 'inset(14% 10% 14% 10%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power3.out', scrollTrigger: trig });
+    const img = el.querySelector('img');
+    if (img) G.fromTo(img, { scale: 1.2 }, { scale: 1, duration: 1.8, ease: 'power3.out', scrollTrigger: trig });
+  });
+
+  // Service band leans with scroll speed.
+  const band = $('.marquee');
+  if (band) {
+    const skew = G.quickTo(band, 'skewX', { duration: 0.5, ease: 'power3' });
+    ST.create({ onUpdate: (s) => skew(G.utils.clamp(-6, 6, s.getVelocity() / -400)) });
+  }
+
+  // Configurator wheel floats in.
+  if (cf) G.from('[data-cf-stage]', { yPercent: 8, autoAlpha: 0, duration: 1.4, ease: 'power3.out', scrollTrigger: { trigger: cf, start: 'top 75%' } });
+
+  // Method: pinned on desktop; steps light up one by one as you scroll.
+  const method = $('[data-method]');
+  if (method && matchMedia('(min-width: 900px)').matches) {
+    const steps = $$('.method-steps > li:not(.method-rail)', method);
+    const fill = $('[data-method-fill]', method);
+    method.classList.add('is-pinned');
+    ST.create({
+      trigger: $('.method-grid', method),
+      start: 'top 16%',
+      end: () => '+=' + Math.round(innerHeight * 1.2),
+      pin: true,
+      scrub: true,
+      onUpdate: (s) => {
+        const i = Math.min(steps.length - 1, Math.floor(s.progress * steps.length));
+        steps.forEach((li, k) => li.classList.toggle('is-active', k === i));
+        if (fill) fill.style.transform = `scaleY(${s.progress.toFixed(3)})`;
+      },
+    });
+    steps[0]?.classList.add('is-active');
+  }
+
+  // Magnetic primary buttons.
+  if (finePointer) {
+    $$('.magnetic').forEach((b) => {
+      const xTo = G.quickTo(b, 'x', { duration: 0.6, ease: 'power3' });
+      const yTo = G.quickTo(b, 'y', { duration: 0.6, ease: 'power3' });
+      b.addEventListener('pointermove', (e) => {
+        const r = b.getBoundingClientRect();
+        xTo((e.clientX - r.left - r.width / 2) * 0.22);
+        yTo((e.clientY - r.top - r.height / 2) * 0.3);
+      });
+      b.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
+    });
+  }
+
+  addEventListener('load', () => ST.refresh());
+  document.fonts?.ready.then(() => ST.refresh());
+}

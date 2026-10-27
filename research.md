@@ -107,4 +107,8 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 ---
 
 ## 7. Generated media (not RJ work)
+- **2026-10-27, at the user's request, the real Instagram job photos were taken off the site.** The Réalisations page, home rail and BMW 650i feature are paused, and an Instagram link replaces them. Every image on the site is now an AI illustration tagged "Illustration". `projects` and `workPage()` remain in the code, ready to come back with good owner photos.
+- **Service illustrations** (`art/illustrations/`): AI-generated on 2026-10-27 for "Roues pliées" (straightening machine) and "Soudure" (TIG weld). Tagged "Illustration" on the page, with the alt text saying so.
+- **Finish list** (2026-10-27): the 9 colours come from the owner: Métallique, Noir lustré, Deux tons, Bronze, Blanc, Aluminium poli, Argent, Rouge lollipop, Charbon. *Métallique* is rendered as a dark metallic flake. Confirm the exact shade with the owner.
+- **Finish configurator renders** (`art/finishes/`): AI-generated with Higgsfield (GPT Image 2.5) on 2026-10-22. A generic six-spoke wheel in seven finishes, labelled on the page as illustrations, not RJ work and not a colour guarantee.
 - **Hero film "Cabine"**: AI-generated with Higgsfield (GPT Image 2.5 for the look frame, Seedance 2.5 for the animation) on 2026-09-29. It shows a generic six-spoke wheel in a powder-coating booth. It's used only as brand atmosphere in the hero and is **not** presented as a customer project or listed in the portfolio.

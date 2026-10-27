@@ -3,7 +3,7 @@
 import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { business as B, projects, routes, t } from './src/content.mjs';
+import { business as B, projects, routes, t, finishes } from './src/content.mjs';
 import { rjLogo } from './src/logo.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -83,7 +83,7 @@ const phoneI = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M
 
 function header(lang, key) {
   const L = t[lang];
-  const links = ['services', 'work', 'contact'].map((k) => `<a href="${routes[k][lang]}"${k === key ? ' aria-current="page"' : ''}>${L.nav[k]}</a>`).join('');
+  const links = ['services', 'contact'].map((k) => `<a href="${routes[k][lang]}"${k === key ? ' aria-current="page"' : ''}>${L.nav[k]}</a>`).join('');
   return `<a class="skip" href="#main">${L.skip}</a>
 <header class="site-header" data-header>
   ${logo(lang)}
@@ -96,7 +96,7 @@ function header(lang, key) {
 </header>
 <div class="menu" id="menu" data-menu hidden>
   <nav class="menu-nav" aria-label="${L.menu}">
-    ${['home', 'services', 'work', 'contact'].map((k, i) => `<a href="${routes[k][lang]}" style="--i:${i}"${k === key ? ' aria-current="page"' : ''}><small>0${i + 1}</small>${L.nav[k]}</a>`).join('')}
+    ${['home', 'services', 'contact'].map((k, i) => `<a href="${routes[k][lang]}" style="--i:${i}"${k === key ? ' aria-current="page"' : ''}><small>0${i + 1}</small>${L.nav[k]}</a>`).join('')}
   </nav>
   <div class="menu-foot">
     <a href="${B.phoneHref}">${B.phone}</a>
@@ -126,7 +126,7 @@ function footer(lang) {
 </footer>
 <div class="action-bar" data-action-bar>
   <a class="btn btn-ghost" href="${B.phoneHref}">${phoneI}<span>${L.cta.call}</span></a>
-  <a class="btn btn-red" href="${routes.contact[lang]}"><span>${L.cta.quoteShort}</span>${arrow}</a>
+  <a class="btn btn-red" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${L.assistant.openShort}</span>${arrow}</a>
 </div>`;
 }
 
@@ -166,6 +166,78 @@ function splash() {
   if (document.fonts && document.fonts.load) document.fonts.load('italic 800 64px "Barlow Condensed"').then(go, go);
 })();
 </script>`;
+}
+
+// ---------- AI booking assistant (demo) ----------
+const sparkI = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>';
+const markSvg = `<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="2.4"/>${Array.from({ length: 6 }, (_, i) => { const a = (i * 60 * Math.PI) / 180; return `<path d="M${(20 + Math.cos(a) * 6).toFixed(1)} ${(20 + Math.sin(a) * 6).toFixed(1)}L${(20 + Math.cos(a) * 15).toFixed(1)} ${(20 + Math.sin(a) * 15).toFixed(1)}" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>`; }).join('')}<circle cx="20" cy="20" r="4" fill="#fb0102"/></svg>`;
+
+// Strings with placeholders for the browser ({n}, {f}, ...): functions in content.mjs are rendered with tokens.
+function assistantConfig(lang) {
+  const L = t[lang], A = L.assistant;
+  const strings = { ...A, greetFinish: A.greetFinish('{f}'), photosGot1: A.photosGot(1), photosGotN: A.photosGot(2).replace('2', '{n}'), time: A.time('{d}'), done: A.done('{n}'), waMsg: A.waMsg({ name: '{name}', when: '{when}', address: '{address}' }) };
+  delete strings.photosGot;
+  return {
+    lang, locale: L.lang, t: strings,
+    services: L.services.map((x) => ({ id: x.id, name: x.name })),
+    hours: B.hours, days: L.days, hoursNote: L.hoursNote,
+    phone: B.phone, phoneHref: B.phoneHref, mark: markSvg,
+    icsTitle: lang === 'fr' ? 'Évaluation — RJ Welding & Wheels' : 'Assessment — RJ Welding & Wheels',
+    addressLine: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}, ${B.address.region} ${B.address.postal}`,
+    addressShort: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}`,
+  };
+}
+function assistantShell(lang) {
+  const A = t[lang].assistant;
+  return `<button class="as-launch" type="button" data-assistant hidden><span class="as-launch-mark">${markSvg}</span><span>${A.open}</span><em>${A.demo}</em></button>
+<script type="application/json" id="assistant-config">${JSON.stringify(assistantConfig(lang)).replace(/</g, '\\u003c')}</script>`;
+}
+
+function finishImg(id, img, { eager = false, alt = '' } = {}) {
+  const set = (ext) => [600, 1000, 1400].map((w) => `/assets/img/finishes/${img}-${w}.${ext} ${w}w`).join(', ');
+  const sizes = '(min-width: 900px) 46vw, 92vw';
+  return `<picture class="cf-img" data-finish-img="${id}">
+    <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
+    <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+    <img src="/assets/img/finishes/${img}-1000.jpg" srcset="${set('jpg')}" sizes="${sizes}" width="1400" height="1400" alt="${esc(alt)}" ${eager ? '' : 'loading="lazy"'} decoding="async">
+  </picture>`;
+}
+
+function configurator(lang) {
+  const C = t[lang].configurator;
+  const first = finishes.find((f) => f.id === 'gloss-black');
+  return `<section class="configurator" aria-labelledby="cf-title" data-configurator>
+  <div class="wrap cf-grid">
+    <div class="cf-stage" data-cf-stage>
+      <div class="cf-glow" aria-hidden="true"></div>
+      <div class="cf-tilt" data-cf-tilt>
+        ${finishes.map((f) => finishImg(f.id, f.img, { alt: `${f[lang].name} — ${C.note}` })).join('')}
+      </div>
+      <span class="cf-tag" data-cf-tag>${first[lang].name}</span>
+    </div>
+    <div class="cf-copy">
+      <p class="kicker reveal">${C.kicker}</p>
+      <h2 id="cf-title" class="display section-title reveal"><span>${C.title[0]}</span> <span class="cf-accent">${C.title[1]}</span></h2>
+      <p class="cf-lead reveal">${C.lead}</p>
+      <div class="cf-swatches reveal" role="radiogroup" aria-label="${C.choose}">
+        ${finishes.map((f, i) => `<button type="button" role="radio" class="cf-swatch" data-finish="${f.id}" data-name="${esc(f[lang].name)}" data-note="${esc(f[lang].note)}" aria-checked="${f.id === first.id}" tabindex="${f.id === first.id ? 0 : -1}" style="--sw:${f.swatch}">
+          <span class="cf-dot" aria-hidden="true"></span><span class="cf-label"><span class="cf-name">${f[lang].name}</span>${f.id === 'raw' ? `<small>${C.before}</small>` : ''}</span>
+        </button>`).join('')}
+      </div>
+      <p class="cf-note-line" data-cf-note aria-live="polite">${first[lang].note}</p>
+      <div class="cf-actions reveal">
+        <a class="btn btn-red btn-lg magnetic" href="${routes.contact[lang]}" data-assistant data-assistant-finish="${esc(first[lang].name)}" data-cf-cta>${sparkI}<span>${C.cta}</span>${arrow}</a>
+      </div>
+      <p class="fine cf-disclaimer">${C.note}</p>
+    </div>
+  </div>
+</section>`;
+}
+
+function marquee(lang) {
+  const words = t[lang].marquee;
+  const run = words.map((w) => `<span>${w}</span><i aria-hidden="true">✦</i>`).join('');
+  return `<div class="marquee" aria-hidden="true"><div class="marquee-track" data-marquee>${run}${run}</div></div>`;
 }
 
 function layout({ lang, key, title, desc, body, bodyClass = '' }) {
@@ -210,16 +282,21 @@ try {
   if (replay || !(sessionStorage.getItem('rjIntro') || matchMedia('(prefers-reduced-motion: reduce)').matches)) document.documentElement.classList.add('intro');
 } catch (e) {}` : ''}
 </script>
+<script defer src="/assets/vendor/gsap.min.js"></script>
+<script defer src="/assets/vendor/ScrollTrigger.min.js"></script>
+<script defer src="/assets/vendor/lenis.min.js"></script>
 <script type="module" src="/assets/js/main.js?v=${VERSION}"></script>
 <script type="application/ld+json">${JSON.stringify(jsonLd(lang))}</script>
 </head>
 <body class="${bodyClass}">
 ${key === 'home' ? splash() : ''}
+<div class="scroll-progress" aria-hidden="true"><i data-progress></i></div>
 ${header(lang, key ?? 'home')}
 <main id="main">
 ${body}
 </main>
 ${footer(lang)}
+${assistantShell(lang)}
 </body>
 </html>
 `;
@@ -304,8 +381,8 @@ function home(lang) {
     <h1 id="h1" class="display hero-title">${H.h1.map((w, i) => `<span class="hero-line" style="--d:${200 + i * 110}ms"><span>${w}</span></span>`).join('')}</h1>
     <p class="lead hero-in" style="--d:560ms">${H.lead}</p>
     <div class="hero-actions hero-in" style="--d:660ms">
-      <a class="btn btn-red btn-lg" href="${routes.contact[lang]}"><span>${L.cta.quote}</span>${arrow}</a>
-      <a class="btn btn-ghost btn-lg" href="${B.phoneHref}">${phoneI}<span>${B.phone}</span></a>
+      <a class="btn btn-red btn-lg magnetic" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${L.assistant.open}</span>${arrow}</a>
+      <a class="btn btn-ghost btn-lg magnetic" href="${B.phoneHref}">${phoneI}<span>${B.phone}</span></a>
     </div>
   </div>
   <div class="wrap hero-foot hero-in" style="--d:800ms">
@@ -320,6 +397,8 @@ function home(lang) {
     <p class="statement-text" data-words>${H.statement}</p>
   </div>
 </section>
+
+${marquee(lang)}
 
 <section class="services" aria-labelledby="services-title">
   <div class="wrap">
@@ -339,58 +418,58 @@ function home(lang) {
     </ol>
   </div>
   <div class="service-peek" aria-hidden="true" data-service-peek>
-    ${['lip', 'black-spoke', 'booth'].map((s) => picture(s, { sizes: '28vw', cls: 'peek-img', attrs: `data-peek="${s}"` })).join('')}
+    ${['illus-crack', 'illus-curb', 'illus-booth', 'illus-straightening', 'illus-welding'].map((s) => picture(s, { sizes: '28vw', cls: 'peek-img', attrs: `data-peek="${s}"` })).join('')}
     ${wheelDrawing('peek-wheel')}
   </div>
 </section>
 
+${configurator(lang)}
+
 <section class="feature" aria-labelledby="feature-title">
-  <div class="feature-media">
-    ${picture('bmw-650i', { sizes: '(min-width: 900px) 50vw, 100vw', alt: feature[lang].alt, cls: 'feature-img', attrs: 'data-parallax' })}
+  <div class="feature-media reveal-media">
+    ${picture('illus-oven', { sizes: '(min-width: 900px) 50vw, 100vw', alt: H.featureAlt, cls: 'feature-img', attrs: 'data-parallax' })}
+    <span class="illus-tag">Illustration</span>
   </div>
   <div class="feature-copy">
-    <p class="kicker reveal">${H.featureKicker} · 2025</p>
-    <h2 id="feature-title" class="display feature-title reveal">BMW<br><span class="nocase">650i</span></h2>
-    <p class="feature-service reveal">${feature[lang].service}</p>
+    <p class="kicker reveal">${H.featureKicker}</p>
+    <h2 id="feature-title" class="display feature-title reveal">${H.featureTitle.join('<br>')}</h2>
+    <p class="feature-service reveal">${H.featureService}</p>
     <p class="feature-note reveal">${H.featureNote}</p>
-    <a class="link reveal" href="${feature.post}" target="_blank" rel="noopener">${L.cta.ig} ${ext}</a>
+    <a class="link reveal" href="${routes.contact[lang]}" data-assistant>${L.assistant.open} ${arrow}</a>
   </div>
 </section>
 
-<section class="method" aria-labelledby="method-title">
+<section class="method" aria-labelledby="method-title" data-method>
   <div class="wrap">
     <div class="section-head">
       <p class="kicker reveal">${H.methodKicker}</p>
       <h2 id="method-title" class="display section-title reveal">${H.methodTitle}</h2>
     </div>
     <div class="method-grid">
-      <figure class="method-media reveal">
-        ${picture('booth', { sizes: '(min-width: 900px) 34vw, 100vw', alt: projects.find((p) => p.slug === 'booth')[lang].alt })}
-        <figcaption>${projects.find((p) => p.slug === 'booth')[lang].caption}</figcaption>
+      <figure class="method-media reveal-media">
+        ${picture('illus-booth-tall', { sizes: '(min-width: 900px) 34vw, 100vw', alt: H.methodAlt })}
+        <span class="illus-tag">Illustration</span>
       </figure>
-      <ol class="method-steps">
+      <ol class="method-steps" data-method-steps>
+        <li class="method-rail" aria-hidden="true"><i data-method-fill></i></li>
         ${H.method.map((m, i) => `<li class="reveal" style="--d:${i * 80}ms"><span class="step-n">${m.n}</span><h3>${m.t}</h3><p>${m.d}</p></li>`).join('')}
       </ol>
     </div>
   </div>
 </section>
 
-<section class="work-rail" aria-labelledby="work-title">
-  <div class="wrap section-head section-head-row">
+<section class="ig-band" aria-labelledby="ig-title">
+  <div class="wrap ig-inner">
     <div>
-      <p class="kicker reveal">${H.workKicker}</p>
-      <h2 id="work-title" class="display section-title reveal">${H.workTitle}</h2>
-      <p class="fine reveal">${H.workNote}</p>
+      <p class="kicker reveal">Instagram</p>
+      <h2 id="ig-title" class="display section-title reveal">${H.igTitle}</h2>
+      <p class="fine reveal">${H.igNote}</p>
     </div>
-    <a class="btn btn-ghost reveal" href="${routes.work[lang]}"><span>${L.cta.allWork}</span>${arrow}</a>
-  </div>
-  <div class="rail" data-rail tabindex="0" aria-label="${H.workTitle}">
-    ${projects.filter((p) => p.slug !== 'bmw-650i').slice(0, 6).map((p, i) => workCard(p, lang, { sizes: '(min-width: 900px) 28vw, 78vw', i })).join('')}
+    <a class="btn btn-ghost btn-lg reveal" href="${B.instagramUrl}" target="_blank" rel="noopener"><span>@${B.instagram}</span>${ext}</a>
   </div>
 </section>
 
-${ctaBand(lang)}
-${workDialog(lang)}`;
+${ctaBand(lang)}`;
   return layout({ lang, key: 'home', title: H.title, desc: H.desc, body, bodyClass: 'page-home' });
 }
 
@@ -414,8 +493,8 @@ function servicesPage(lang) {
 </nav>
 <div class="service-blocks">
   ${L.services.map((s, i) => `<section class="service-block${i % 2 ? ' flip' : ''}" id="${s.id}" aria-labelledby="${s.id}-t">
-    <div class="sb-media reveal">
-      ${s.img ? picture(s.img, { sizes: '(min-width: 900px) 45vw, 100vw', alt: projects.find((p) => p.img === s.img)[lang].alt }) : `<div class="sb-drawing">${wheelDrawing()}</div>`}
+    <div class="sb-media reveal-media">
+      ${s.img ? picture(s.img, { sizes: '(min-width: 900px) 45vw, 100vw', alt: s.alt || projects.find((p) => p.img === s.img)[lang].alt }) : `<div class="sb-drawing">${wheelDrawing()}</div>`}${s.illus ? `<span class="illus-tag">${lang === 'fr' ? 'Illustration' : 'Illustration'}</span>` : ''}
     </div>
     <div class="sb-copy">
       <span class="sb-n reveal">${s.n}</span>
@@ -523,7 +602,15 @@ function contactPage(lang) {
   </form>`;
   const body = `${pageHead(lang, P)}
 <section class="wrap contact-grid">
-  <div class="contact-form reveal">${form}</div>
+  <div class="contact-form reveal">
+    <div class="as-invite">
+      <p class="kicker">${L.assistant.title} · ${L.assistant.demo}</p>
+      <h2 class="display">${lang === 'fr' ? 'Réservez en une minute.' : 'Book in one minute.'}</h2>
+      <p>${lang === 'fr' ? 'L’assistant choisit une date avec vous, prend vos photos et vous envoie la confirmation.' : 'The assistant picks a date with you, takes your photos and sends you the confirmation.'}</p>
+      <a class="btn btn-red btn-lg" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${L.assistant.open}</span>${arrow}</a>
+    </div>
+    ${form}
+  </div>
   <aside class="contact-card reveal" aria-label="${L.footer.visit}">
     <a class="contact-phone" href="${B.phoneHref}"><small>${L.cta.callFull}</small><span>${B.phone}</span></a>
     <div class="cc-block"><h2 class="kicker">${L.footer.visit}</h2><address>${B.name}<br>${addressLines(lang)}</address>
@@ -566,7 +653,7 @@ await cp(join(ROOT, 'public'), OUT, { recursive: true });
 for (const lang of ['fr', 'en']) {
   await page(routes.home[lang], home(lang));
   await page(routes.services[lang], servicesPage(lang));
-  await page(routes.work[lang], workPage(lang));
+  // Réalisations page paused until the owner supplies quality photos (workPage() kept for later).
   await page(routes.contact[lang], contactPage(lang));
 }
 await page('/404.html', notFound('fr'));
@@ -575,7 +662,7 @@ await page('/en/404.html', notFound('en'));
 const today = new Date().toISOString().slice(0, 10);
 await writeFile(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${Object.values(routes).flatMap((r) => ['fr', 'en'].map((l) => `  <url><loc>${abs(r[l])}</loc><lastmod>${today}</lastmod>
+${Object.entries(routes).filter(([k]) => k !== 'work').map(([, r]) => r).flatMap((r) => ['fr', 'en'].map((l) => `  <url><loc>${abs(r[l])}</loc><lastmod>${today}</lastmod>
     <xhtml:link rel="alternate" hreflang="fr-CA" href="${abs(r.fr)}"/><xhtml:link rel="alternate" hreflang="en-CA" href="${abs(r.en)}"/><xhtml:link rel="alternate" hreflang="x-default" href="${abs(r.fr)}"/></url>`)).join('\n')}
 </urlset>
 `);
