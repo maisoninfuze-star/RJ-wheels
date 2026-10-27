@@ -8,8 +8,27 @@ const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const PORT = Number(process.env.PORT) || 4321;
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.xml': 'application/xml', '.txt': 'text/plain', '.json': 'application/json', '.mp4': 'video/mp4', '.woff2': 'font/woff2' };
 
+// Local stand-in for Vercel functions: /api/<name> → api/<name>.js exporting POST(Request).
+const API = join(dirname(fileURLToPath(import.meta.url)), '..', 'api');
+async function api(req, res, name) {
+  try {
+    const mod = await import(join(API, `${name}.js`));
+    if (req.method !== 'POST' || !mod.POST) { res.writeHead(405).end(); return; }
+    const chunks = [];
+    for await (const c of req) chunks.push(c);
+    const request = new Request(`http://${req.headers.host}${req.url}`, { method: 'POST', headers: req.headers, body: Buffer.concat(chunks), duplex: 'half' });
+    const response = await mod.POST(request);
+    res.writeHead(response.status, Object.fromEntries(response.headers)).end(Buffer.from(await response.arrayBuffer()));
+  } catch (err) {
+    console.error(err);
+    res.writeHead(500, { 'content-type': 'application/json' }).end('{"error":"server"}');
+  }
+}
+
 createServer(async (req, res) => {
   let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  const m = /^\/api\/([a-z-]+)$/.exec(p);
+  if (m) return api(req, res, m[1]);
   if (p.includes('..')) { res.writeHead(400).end(); return; }
   let file = join(DIST, p);
   try { if ((await stat(file)).isDirectory()) file = join(file, 'index.html'); }

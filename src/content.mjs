@@ -36,8 +36,9 @@ export const business = {
   // CONFIRM: defaults to the shop line — the owner must confirm it is on WhatsApp (research.md §6).
   whatsapp: '15144669693',
   // Set when the owner confirms a public email / form backend (research.md §6.3).
-  email: null,
-  formEndpoint: null,
+  // Public email; bookings and quotes are emailed here (api/_lib/mail.js, MAIL_TO).
+  email: 'info@rjwheels.ca',
+  formEndpoint: '/api/quote',
 };
 
 // Only posts published by @rj_wheels, or collabs that credit RJ in writing.
@@ -197,7 +198,7 @@ export const t = {
         addPhotos: 'Ajouter des photos', takePhoto: 'ou prendre une photo avec le téléphone', removePhoto: 'Retirer la photo', tooMany: 'Maximum 6 photos.',
         photosCount: (n) => n === 1 ? '1 photo à suivre' : `${n} photos à suivre`,
         choose: 'Choisir…', other: 'Autre / je ne sais pas',
-        submit: 'Envoyer sur WhatsApp', sending: 'Envoi…',
+        submit: 'Envoyer sur WhatsApp', submitEmail: 'Envoyer ma demande', sending: 'Envoi…',
         sent: 'Merci ! Votre demande a été envoyée. Nous vous recontacterons.',
         error: 'L’envoi a échoué. Appelez-nous au 514-466-9693.',
         readyTitle: 'Votre demande est prête',
@@ -222,10 +223,14 @@ export const t = {
     },
     marquee: ['Réparation de roues', 'Soudure', 'Peinture en poudre', 'Dommages de bordure', 'Roues fissurées', 'Saint-Laurent'],
     assistant: {
-      open: 'Réserver avec l’assistant', openShort: 'Réserver', title: 'Assistant RJ', status: 'En ligne', demo: 'Démo',
-      demoNote: 'Démonstration : aucune donnée n’est envoyée ni enregistrée.',
+      open: 'Réserver avec l’assistant', openShort: 'Réserver', title: 'Assistant RJ', status: 'En ligne', demo: 'IA', badge: 'IA',
+      privacy: 'Assistant IA. Vos informations sont transmises à RJ Welding & Wheels uniquement pour traiter votre demande.',
+      errDown: 'L’assistant est momentanément indisponible. Joignez-nous directement :', errBusy: 'Beaucoup de demandes en ce moment. Réessayez dans un instant ou joignez-nous :',
+      sentTitle: 'Demande envoyée', sentText: 'Rendez-vous demandé : {when}. L’atelier vous confirmera directement.', pending: 'à confirmer',
+      photosHeld: 'Photo(s) gardée(s) : {n}. Elles seront envoyées avec votre demande.', photosSent: '{n} photo(s) envoyée(s) à l’atelier avec la demande {ref}.', photosFailed: 'Les photos n’ont pas pu être envoyées. Vous pourrez les montrer à l’atelier.',
+      finishOpener: 'Je suis intéressé(e) par le fini {f}.',
       placeholder: 'Écrivez votre message…', send: 'Envoyer', attach: 'Ajouter des photos', close: 'Fermer l’assistant', restart: 'Recommencer',
-      greet: 'Bonjour! Je suis l’assistant de RJ Welding & Wheels. Je peux réserver votre rendez-vous d’évaluation ou répondre à vos questions.',
+      greet: 'Bonjour! Je suis l’assistant IA de RJ Welding & Wheels. Posez-moi vos questions sur nos services, ou demandons ensemble un rendez-vous d’évaluation.',
       greetFinish: (f) => `Bonjour! Excellent choix : ${f}. Je vais réserver votre rendez-vous d’évaluation en quelques étapes.`,
       startBook: 'Réserver un rendez-vous', startAsk: 'Poser une question',
       askPrompt: 'Allez-y, posez votre question. Par exemple : vos heures, l’adresse, ou comment fonctionne la peinture en poudre.',
@@ -345,7 +350,7 @@ export const t = {
         addPhotos: 'Add photos', takePhoto: 'or take one with your phone', removePhoto: 'Remove photo', tooMany: 'Maximum 6 photos.',
         photosCount: (n) => n === 1 ? '1 photo to follow' : `${n} photos to follow`,
         choose: 'Choose…', other: 'Other / not sure',
-        submit: 'Send on WhatsApp', sending: 'Sending…',
+        submit: 'Send on WhatsApp', submitEmail: 'Send my request', sending: 'Sending…',
         sent: 'Thank you! Your request was sent. We’ll get back to you.',
         error: 'Sending failed. Please call us at 514-466-9693.',
         readyTitle: 'Your request is ready',
@@ -370,10 +375,14 @@ export const t = {
     },
     marquee: ['Wheel repair', 'Welding', 'Powder coating', 'Curb rash', 'Cracked wheels', 'Saint-Laurent'],
     assistant: {
-      open: 'Book with the assistant', openShort: 'Book', title: 'RJ Assistant', status: 'Online', demo: 'Demo',
-      demoNote: 'Demo: no data is sent or stored.',
+      open: 'Book with the assistant', openShort: 'Book', title: 'RJ Assistant', status: 'Online', demo: 'AI', badge: 'AI',
+      privacy: 'AI assistant. Your details go to RJ Welding & Wheels only to handle your request.',
+      errDown: 'The assistant is unavailable right now. Reach us directly:', errBusy: 'Lots of requests right now. Try again in a moment or reach us:',
+      sentTitle: 'Request sent', sentText: 'Requested appointment: {when}. The shop will confirm with you directly.', pending: 'to be confirmed',
+      photosHeld: '{n} photo(s) kept. They’ll be sent with your request.', photosSent: '{n} photo(s) sent to the shop with request {ref}.', photosFailed: 'The photos could not be sent. You can show them at the shop.',
+      finishOpener: 'I’m interested in the {f} finish.',
       placeholder: 'Type your message…', send: 'Send', attach: 'Add photos', close: 'Close the assistant', restart: 'Start over',
-      greet: 'Hi! I’m the RJ Welding & Wheels assistant. I can book your assessment appointment or answer your questions.',
+      greet: 'Hi! I’m the RJ Welding & Wheels AI assistant. Ask me about our services, or let’s request an assessment appointment together.',
       greetFinish: (f) => `Hi! Great choice: ${f}. I’ll book your assessment appointment in a few steps.`,
       startBook: 'Book an appointment', startAsk: 'Ask a question',
       askPrompt: 'Go ahead and ask. For example: your hours, the address, or how powder coating works.',

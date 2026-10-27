@@ -114,7 +114,7 @@ function footer(lang) {
   </div>
   <div class="wrap footer-grid">
     <div><h2 class="kicker">${L.footer.visit}</h2><p>${addressLines(lang)}</p><p><a class="link" href="${B.mapsUrl}" target="_blank" rel="noopener">${L.cta.directions} ${ext}</a></p></div>
-    <div><h2 class="kicker">${L.footer.talk}</h2><p><a class="link" href="${B.phoneHref}">${B.phone}</a></p><p><a class="link" href="${routes.contact[lang]}">${L.cta.quote}</a></p></div>
+    <div><h2 class="kicker">${L.footer.talk}</h2><p><a class="link" href="${B.phoneHref}">${B.phone}</a></p><p><a class="link" href="mailto:${B.email}">${B.email}</a></p><p><a class="link" href="${routes.contact[lang]}">${L.cta.quote}</a></p></div>
     <div><h2 class="kicker">${L.footer.hours}</h2>${hoursList(lang, 'hours hours-compact')}</div>
     <div><h2 class="kicker">${L.footer.follow}</h2><p><a class="link" href="${B.instagramUrl}" target="_blank" rel="noopener">Instagram @${B.instagram} ${ext}</a></p><p><a class="link" href="${B.mapsUrl}" target="_blank" rel="noopener">${L.rating(B.rating)} ${ext}</a><br><span class="fine">${L.ratingSeen}</span></p></div>
   </div>
@@ -139,6 +139,7 @@ function jsonLd(lang) {
     name: B.name,
     url: abs(routes.home[lang]),
     telephone: '+1-514-466-9693',
+    email: B.email || undefined,
     image: abs('/assets/img/og.jpg'),
     address: { '@type': 'PostalAddress', streetAddress: B.address.streetEn, addressLocality: B.address.city, addressRegion: B.address.region, postalCode: B.address.postal, addressCountry: B.address.country },
     geo: { '@type': 'GeoCoordinates', latitude: 45.4936602, longitude: -73.7465089 },
@@ -181,7 +182,7 @@ function assistantConfig(lang) {
     lang, locale: L.lang, t: strings,
     services: L.services.map((x) => ({ id: x.id, name: x.name })),
     hours: B.hours, days: L.days, hoursNote: L.hoursNote,
-    phone: B.phone, phoneHref: B.phoneHref, mark: markSvg,
+    phone: B.phone, phoneHref: B.phoneHref, whatsapp: B.whatsapp, mark: markSvg,
     icsTitle: lang === 'fr' ? 'Évaluation — RJ Welding & Wheels' : 'Assessment — RJ Welding & Wheels',
     addressLine: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}, ${B.address.region} ${B.address.postal}`,
     addressShort: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}`,
@@ -573,7 +574,7 @@ function contactPage(lang) {
       <p class="err" id="f-photos-err" aria-live="polite"></p>
     </div>
     <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <button class="btn btn-red btn-lg" type="submit">${B.whatsapp ? waI : ''}<span>${B.whatsapp ? F.submit : F.readyTitle}</span>${arrow}</button>
+    <button class="btn btn-red btn-lg" type="submit">${B.formEndpoint ? '' : B.whatsapp ? waI : ''}<span>${B.formEndpoint ? F.submitEmail : B.whatsapp ? F.submit : F.readyTitle}</span>${arrow}</button>
     <p class="form-status" role="status" aria-live="polite" data-status></p>
     <div class="ready wa-steps" data-wa hidden tabindex="-1">
       <h3 class="display">${F.waTitle}</h3>
@@ -606,7 +607,7 @@ function contactPage(lang) {
     <div class="as-invite">
       <p class="kicker">${L.assistant.title} · ${L.assistant.demo}</p>
       <h2 class="display">${lang === 'fr' ? 'Réservez en une minute.' : 'Book in one minute.'}</h2>
-      <p>${lang === 'fr' ? 'L’assistant choisit une date avec vous, prend vos photos et vous envoie la confirmation.' : 'The assistant picks a date with you, takes your photos and sends you the confirmation.'}</p>
+      <p>${lang === 'fr' ? 'L’assistant répond à vos questions, choisit une date avec vous et transmet votre demande et vos photos à l’atelier.' : 'The assistant answers your questions, picks a date with you and sends your request and photos to the shop.'}</p>
       <a class="btn btn-red btn-lg" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${L.assistant.open}</span>${arrow}</a>
     </div>
     ${form}
@@ -616,6 +617,7 @@ function contactPage(lang) {
     <div class="cc-block"><h2 class="kicker">${L.footer.visit}</h2><address>${B.name}<br>${addressLines(lang)}</address>
       <a class="link" href="${B.mapsUrl}" target="_blank" rel="noopener">${L.cta.directions} ${ext}</a></div>
     <div class="cc-block"><h2 class="kicker">${L.footer.hours}</h2>${hoursList(lang)}</div>
+    <div class="cc-block"><h2 class="kicker">${lang === 'fr' ? 'Courriel' : 'Email'}</h2><a class="link" href="mailto:${B.email}">${B.email}</a></div>
     <div class="cc-block"><h2 class="kicker">Instagram</h2><a class="link" href="${B.instagramUrl}" target="_blank" rel="noopener">@${B.instagram} ${ext}</a></div>
     <div class="map" data-map data-src="${B.mapsEmbed}">
       <button class="btn btn-ghost" type="button" data-map-btn>${P.mapLabel}</button>

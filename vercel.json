@@ -48,5 +48,16 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 60
+    },
+    "api/quote.js": {
+      "maxDuration": 20
+    },
+    "api/booking-photos.js": {
+      "maxDuration": 20
+    }
+  }
 }

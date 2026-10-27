@@ -346,21 +346,29 @@ if (form) {
     if (form.company.value) return; // honeypot
     if (!validate()) return;
     const text = summary();
-    if (D.whatsapp) {
-      const url = `https://wa.me/${D.whatsapp}?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank', 'noopener');
-      showWhatsAppSteps(url);
-      return;
-    }
+    // Email first (api/quote.js → info@rjwheels.ca, with photos); WhatsApp is the fallback.
     if (D.endpoint) {
       const btn = $('button[type="submit"]', form);
       btn.disabled = true; status.textContent = D.msgSending;
       try {
-        const res = await fetch(D.endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+        const fd = new FormData(form);
+        fd.delete('photos');
+        photos.forEach((p, i) => fd.append('photos', p.file, `photo-${i + 1}.jpg`));
+        fd.append('lang', D.lang);
+        const res = await fetch(D.endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
         if (!res.ok) throw new Error(res.status);
-        status.textContent = D.msgSent; form.reset();
-      } catch { status.textContent = D.msgError; }
-      btn.disabled = false;
+        status.textContent = D.msgSent;
+        form.reset();
+        photos.splice(0).forEach((p) => URL.revokeObjectURL(p.url));
+        renderThumbs();
+        btn.disabled = false;
+        return;
+      } catch { btn.disabled = false; status.textContent = ''; }
+    }
+    if (D.whatsapp) {
+      const url = `https://wa.me/${D.whatsapp}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank', 'noopener');
+      showWhatsAppSteps(url);
       return;
     }
     if (D.email) {

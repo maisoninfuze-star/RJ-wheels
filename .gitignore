@@ -19,3 +19,8 @@ research/instagram/embed_*.html
 # Finish masters: keep only the selected renders
 !art/finishes/
 art/finishes/master-b.png
+
+# Local secrets
+.env
+.env.*
+!.env.example
