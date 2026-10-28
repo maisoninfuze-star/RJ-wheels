@@ -1,5 +1,5 @@
 // POST /api/booking-photos — emails photos for an existing booking reference
-// to the shop (MAIL_TO only). multipart/form-data: ref, photos[] (images).
+// to the shop (info@rjwheels.ca only). multipart/form-data: ref, photos[] (images).
 import { json, clientIp, sameOrigin, rateLimit } from './_lib/guard.js';
 import { sendMail, mailConfigured } from './_lib/mail.js';
 

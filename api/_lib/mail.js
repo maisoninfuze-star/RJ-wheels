@@ -1,11 +1,13 @@
 // Email delivery for booking requests and quotes, via Resend (https://resend.com).
 // Environment variables (set in Vercel → Project → Settings → Environment Variables):
 //   RESEND_API_KEY   API key from Resend
-//   MAIL_TO          where requests go (default info@rjwheels.ca)
-//   MAIL_FROM        verified sender, e.g. "RJ Welding & Wheels <reservations@rjwheels.ca>"
-// Messages only ever go to MAIL_TO: visitors cannot choose a recipient.
+//   MAIL_FROM        verified sender, e.g. "RJ Welding & Wheels <reservations@send.rjwheels.ca>"
+// The recipient is fixed in code: every message goes to the shop's address from
+// src/content.mjs (info@rjwheels.ca). No setting or visitor input can change it.
+import { business } from '../../src/content.mjs';
 
-export const MAIL_TO = process.env.MAIL_TO || 'info@rjwheels.ca';
+export const MAIL_TO = business.email; // 'info@rjwheels.ca'
+if (MAIL_TO !== 'info@rjwheels.ca') throw new Error(`Unexpected shop email: ${MAIL_TO}`);
 
 export function mailConfigured() {
   return Boolean(process.env.RESEND_API_KEY && process.env.MAIL_FROM);

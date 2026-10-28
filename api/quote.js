@@ -1,4 +1,4 @@
-// POST /api/quote — the contact-page quote form, emailed to the shop (MAIL_TO)
+// POST /api/quote — the contact-page quote form, emailed to the shop (info@rjwheels.ca)
 // with up to 6 photos. multipart/form-data from the form in contactPage().
 import { json, clientIp, sameOrigin, rateLimit } from './_lib/guard.js';
 import { sendMail, mailConfigured } from './_lib/mail.js';

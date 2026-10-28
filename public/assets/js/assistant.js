@@ -148,7 +148,8 @@ async function send(text) {
     dots.remove();
     console.warn('assistant', err.message);
     const wa = cfg.whatsapp ? ` <a href="https://wa.me/${cfg.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>` : '';
-    bubble('bot', `<p>${esc(err.message === 'rate_limited' ? T.errBusy : T.errDown)}</p><p><a href="${cfg.phoneHref}">${esc(cfg.phone)}</a>${wa}</p>`);
+    const mail = cfg.email ? ` · <a href="mailto:${cfg.email}">${esc(cfg.email)}</a>` : '';
+    bubble('bot', `<p>${esc(err.message === 'rate_limited' ? T.errBusy : T.errDown)}</p><p><a href="${cfg.phoneHref}">${esc(cfg.phone)}</a>${wa}${mail}</p>`);
   } finally {
     busy = false;
     sendBtn.disabled = false;

@@ -182,7 +182,7 @@ function assistantConfig(lang) {
     lang, locale: L.lang, t: strings,
     services: L.services.map((x) => ({ id: x.id, name: x.name })),
     hours: B.hours, days: L.days, hoursNote: L.hoursNote,
-    phone: B.phone, phoneHref: B.phoneHref, whatsapp: B.whatsapp, mark: markSvg,
+    phone: B.phone, phoneHref: B.phoneHref, whatsapp: B.whatsapp, email: B.email, mark: markSvg,
     icsTitle: lang === 'fr' ? 'Évaluation — RJ Welding & Wheels' : 'Assessment — RJ Welding & Wheels',
     addressLine: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}, ${B.address.region} ${B.address.postal}`,
     addressShort: `${lang === 'fr' ? B.address.street : B.address.streetEn}, ${B.address.city}`,
