@@ -49,7 +49,7 @@ python3 scripts/images.py # regenerate images (needs Pillow)
 `vercel.json` is included (build: `node build.mjs`, output: `dist`). Any static host works; just serve `dist/`. Then point `rjweldingandwheels.com` at it and update the website link on the Google Business Profile.
 
 ## Before launch
-1. Settle the address conflict (2930 vs 2640 Diab). Update `business.address` in `src/content.mjs` and fix the Google listing if needed.
+1. ~~Address~~: confirmed **2640, rue Diab, H4S 1E8** (2026-10-28). Update Yellow Pages and other listings that still show 2930.
 2. Confirm the hours.
 3. Confirm the WhatsApp number (`business.whatsapp`, currently the shop line 514-466-9693) and send yourself a test request.
    How the quote form works: the visitor fills it in and adds up to 6 photos, which are resized in their browser. Submitting opens WhatsApp to that number with the request already written. A WhatsApp link can only carry text, so a second step sends the photos into the same chat: the phone share sheet on mobile, or drag-and-drop on desktop. Nothing is stored on a server.

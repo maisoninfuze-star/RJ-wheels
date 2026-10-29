@@ -90,7 +90,7 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 
 ## 6. Owner must confirm before launch
 
-1. **Address**: 2930 Rue Diab (H4S 1M7) or 2640 Diab St (H4S 1E8)? The site currently shows **2930** (matches the brief, Yellow Pages and the May 2025 door photo), but the "Directions" button opens the Google listing, which points to the 2640 pin. **Fix whichever is wrong on Google as well.**
+1. **Address: RESOLVED 2026-10-28.** The client confirmed **2640, rue Diab, Saint-Laurent, QC H4S 1E8** (as on Google Maps). Old listings such as Yellow Pages still show 2930 and should be updated. Original note: 2930 Rue Diab (H4S 1M7) or 2640 Diab St (H4S 1E8)? The site currently shows **2930** (matches the brief, Yellow Pages and the May 2025 door photo), but the "Directions" button opens the Google listing, which points to the 2640 pin. **Fix whichever is wrong on Google as well.**
 2. **Hours**: are the Google hours correct?
 3. **WhatsApp**: is (514) 466-9693 on WhatsApp, or should quotes go to a different mobile number? The quote form sends requests to `business.whatsapp` in `src/content.mjs` (currently the shop line). **Unverified. Test it before launch.**
 3b. **Public email** for quotes, and whether to use a form backend (Formspree / Basin / Netlify Forms). (WhatsApp is now the main channel; email and a form backend are optional.)

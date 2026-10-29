@@ -9,13 +9,13 @@ export const business = {
   phoneHref: 'tel:+15144669693',
   instagram: 'rj_wheels',
   instagramUrl: 'https://www.instagram.com/rj_wheels/',
-  // CONFIRM: Google Maps lists 2640 Diab St, H4S 1E8 (research.md §1).
+  // 2640 Diab, confirmed by the client 2026-10-28 (matches Google Maps).
   address: {
-    street: '2930, rue Diab',
-    streetEn: '2930 Diab Street',
+    street: '2640, rue Diab',
+    streetEn: '2640 Diab Street',
     city: 'Saint-Laurent',
     region: 'QC',
-    postal: 'H4S 1M7',
+    postal: 'H4S 1E8',
     country: 'CA',
   },
   mapsUrl:
@@ -255,7 +255,7 @@ export const t = {
       fallback: 'Je préfère ne pas vous donner une information inexacte. L’équipe vous répondra directement au 514-466-9693.',
       faq: [
         { k: ['heure', 'horaire', 'ouvert', 'ferme', 'quand'], a: 'hours' },
-        { k: ['adresse', 'où est', 'où se', 'où êtes', 'situé', 'diab', 'saint-laurent', 'stationn', 'trouver', 'emplacement'], a: 'L’atelier est au 2930, rue Diab, Saint-Laurent. Appelez avant de passer : 514-466-9693.' },
+        { k: ['adresse', 'où est', 'où se', 'où êtes', 'situé', 'diab', 'saint-laurent', 'stationn', 'trouver', 'emplacement'], a: 'L’atelier est au 2640, rue Diab, Saint-Laurent. Appelez avant de passer : 514-466-9693.' },
         { k: ['prix', 'coût', 'cout', 'combien', 'tarif', '$', 'cher'], a: 'Le prix dépend de l’état de la roue et du travail. C’est justement le but de l’évaluation : l’atelier vous donne une soumission précise après avoir vu la roue (ou vos photos).' },
         { k: ['délai', 'delai', 'combien de temps', 'temps', 'long', 'prêt', 'pret', 'combien de jours'], a: 'Le délai dépend du travail — une réparation simple et une remise à neuf complète ne prennent pas le même temps. L’équipe vous le précise à l’évaluation.' },
         { k: ['poudre', 'powder', 'couleur', 'fini', 'teinte', 'noir', 'argent', 'bronze'], a: 'La peinture en poudre est appliquée électrostatiquement puis cuite au four. Les réalisations publiées vont du noir lustré au satiné, au gris et à l’argent. Vous choisissez votre teinte à l’atelier.' },
@@ -407,7 +407,7 @@ export const t = {
       fallback: 'I’d rather not give you inaccurate information. The team will answer you directly at 514-466-9693.',
       faq: [
         { k: ['hour', 'open', 'close', 'when'], a: 'hours' },
-        { k: ['address', 'where', 'located', 'location', 'diab', 'saint-laurent', 'parking', 'find'], a: 'The shop is at 2930 Diab Street, Saint-Laurent. Call before you come by: 514-466-9693.' },
+        { k: ['address', 'where', 'located', 'location', 'diab', 'saint-laurent', 'parking', 'find'], a: 'The shop is at 2640 Diab Street, Saint-Laurent. Call before you come by: 514-466-9693.' },
         { k: ['price', 'cost', 'how much', 'rate', '$', 'expensive'], a: 'The price depends on the wheel’s condition and the work needed. That’s exactly what the assessment is for: the shop gives you an accurate quote after seeing the wheel (or your photos).' },
         { k: ['how long', 'time', 'turnaround', 'ready', 'days'], a: 'It depends on the job — a simple repair and a full refinish don’t take the same time. The team will tell you at the assessment.' },
         { k: ['powder', 'colour', 'color', 'finish', 'black', 'silver', 'bronze'], a: 'Powder coat is applied electrostatically and then oven-cured. Published work ranges from gloss and satin black to grey and silver. You pick your colour at the shop.' },
