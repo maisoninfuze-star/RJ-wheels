@@ -112,3 +112,9 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 - **Finish list** (2026-10-27): the 9 colours come from the owner: Métallique, Noir lustré, Deux tons, Bronze, Blanc, Aluminium poli, Argent, Rouge lollipop, Charbon. *Métallique* is rendered as a dark metallic flake. Confirm the exact shade with the owner.
 - **Finish configurator renders** (`art/finishes/`): AI-generated with Higgsfield (GPT Image 2.5) on 2026-10-22. A generic six-spoke wheel in seven finishes, labelled on the page as illustrations, not RJ work and not a colour guarantee.
 - **Hero film "Cabine"**: AI-generated with Higgsfield (GPT Image 2.5 for the look frame, Seedance 2.5 for the animation) on 2026-09-29. It shows a generic six-spoke wheel in a powder-coating booth. It's used only as brand atmosphere in the hero and is **not** presented as a customer project or listed in the portfolio.
+
+## 8. Client-provided facts (2026-10-31)
+- **Turnaround** (from the client's feedback): cracked or bent wheels are usually repaired on the spot, same day or within 24 hours; powder coating takes 3–5 business days. Shown on the site and known to the assistant.
+- **About text**: supplied by the client, adapted in FR/EN for the "À propos" section.
+- **Official domain**: rjwheels.ca (canonical, sitemap and structured data). Redirect www.rjwheels.ca and rjweldingandwheels.com to it in Vercel → Domains.
+- **Still needed from the owner**: real photos (work, shop, owner), price ranges, the owner's name, years of experience and photo, approval to quote 3–4 Google reviews (`reviews` in src/content.mjs), FAQ answers (is a welded wheel safe? tires removed? motorcycles/trucks/dealers? wheel sizes? warranty?), whether the shop number accepts SMS/WhatsApp, and whether quotes are free.

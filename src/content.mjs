@@ -4,7 +4,7 @@
 
 export const business = {
   name: 'RJ Welding & Wheels',
-  siteUrl: 'https://rjweldingandwheels.com', // legacy domain, to be re-pointed (research.md §6.10)
+  siteUrl: 'https://rjwheels.ca', // official domain; redirect www and rjweldingandwheels.com here
   phone: '514-466-9693',
   phoneHref: 'tel:+15144669693',
   instagram: 'rj_wheels',
@@ -108,6 +108,9 @@ export const finishes = [
   { id: 'charcoal', img: 'charcoal', swatch: '#36383b', fr: { name: 'Charbon', note: 'Gris charbon satiné, sobre et élégant.' }, en: { name: 'Charcoal', note: 'Satin charcoal grey, understated and elegant.' } },
 ];
 
+// Google review excerpts, added only with the owner's OK: { name: 'Prénom N.', text: '…', stars: 5 }.
+export const reviews = [];
+
 export const routes = {
   home: { fr: '/', en: '/en/' },
   services: { fr: '/services/', en: '/en/services/' },
@@ -131,14 +134,14 @@ export const t = {
     place: 'Saint-Laurent, Montréal',
     footer: { visit: 'Atelier', talk: 'Contact', hours: 'Heures', follow: 'Suivre', rights: 'Tous droits réservés.', photos: 'Images : illustrations générées par IA, à titre indicatif.' },
     services: [
-      { id: 'bent', n: '01', name: 'Roues pliées', short: 'Redressement de jantes voilées ou bosselées après un nid-de-poule ou un choc.', img: 'illus-straightening', illus: true, alt: 'Illustration : roue en aluminium sur une machine de redressement avec comparateur',
-        long: 'Un nid-de-poule suffit parfois à voiler une jante : vibrations au volant, pneu qui perd de l’air, usure irrégulière. Nous examinons la roue à l’atelier et la redressons lorsque son état le permet.' },
-      { id: 'cracked', n: '02', name: 'Roues fissurées', short: 'Soudure de fissures sur jantes en aluminium.', img: 'illus-crack', illus: true, alt: 'Illustration : fissure sur le rebord d’une jante en aluminium',
-        long: 'Une fissure sur une jante en aluminium ne disparaît pas d’elle-même. Chaque roue est évaluée avant la réparation : la soudure de l’aluminium demande un métal propre, une préparation minutieuse et une finition soignée.' },
+      { id: 'bent', n: '01', name: 'Roues pliées', short: 'Redressement de jantes voilées ou bosselées après un nid-de-poule ou un choc.', when: 'Jour même · 24 h', img: 'illus-straightening', illus: true, alt: 'Illustration : roue en aluminium sur une machine de redressement avec comparateur',
+        long: 'Un nid-de-poule suffit parfois à voiler une jante : vibrations au volant, pneu qui perd de l’air, usure irrégulière. Nous examinons la roue à l’atelier et la redressons lorsque son état le permet, souvent sur place, le jour même ou en 24 h.' },
+      { id: 'cracked', n: '02', name: 'Roues fissurées', short: 'Soudure de fissures sur jantes en aluminium.', when: 'Jour même · 24 h', img: 'illus-crack', illus: true, alt: 'Illustration : fissure sur le rebord d’une jante en aluminium',
+        long: 'Une fissure sur une jante en aluminium ne disparaît pas d’elle-même. Chaque roue est évaluée avant la réparation : la soudure de l’aluminium demande un métal propre, une préparation minutieuse et une finition soignée. Réparation souvent sur place, le jour même ou en 24 h.' },
       { id: 'curb', n: '03', name: 'Dommages de bordure', short: 'Égratignures et éclats sur le rebord, effacés avant la finition.', img: 'illus-curb', illus: true, alt: 'Illustration : ponçage d’un rebord de jante abîmé par la bordure',
         long: 'Les frottements contre la bordure marquent le rebord de la jante. Le dommage est corrigé et poncé, puis la roue est refinie pour une surface uniforme.' },
-      { id: 'powder', n: '04', name: 'Peinture en poudre', short: 'Une nouvelle finition, du noir lustré à l’argent, cuite au four.', img: 'illus-booth', illus: true, alt: 'Illustration : roue en cabine de peinture en poudre',
-        long: 'La peinture en poudre est appliquée électrostatiquement puis cuite au four. Elle permet de redonner vie à une roue ternie ou d’en changer complètement l’allure — noir lustré, noir satiné, gris, argent.' },
+      { id: 'powder', n: '04', name: 'Peinture en poudre', short: 'Une nouvelle finition, du noir lustré à l’argent, cuite au four.', when: '3–5 jours ouvrables', img: 'illus-booth', illus: true, alt: 'Illustration : roue en cabine de peinture en poudre',
+        long: 'La peinture en poudre est appliquée électrostatiquement puis cuite au four. Elle permet de redonner vie à une roue ternie ou d’en changer complètement l’allure — noir lustré, deux tons, bronze, blanc, argent… Comptez 3 à 5 jours ouvrables.' },
       { id: 'welding', n: '05', name: 'Soudure', short: 'Soudure de l’aluminium et autres travaux de soudure.', img: 'illus-welding', illus: true, alt: 'Illustration : soudure TIG d’une fissure sur le rebord d’une jante en aluminium',
         long: 'Au-delà des roues, l’atelier réalise des travaux de soudure, notamment sur l’aluminium. Décrivez votre projet et nous vous dirons ce qui est possible.' },
     ],
@@ -171,7 +174,7 @@ export const t = {
       faqTitle: 'Questions fréquentes',
       faq: [
         { q: 'Combien coûte une réparation ?', a: 'Le prix dépend de l’état de la roue et du travail demandé. Envoyez-nous des photos ou passez à l’atelier pour une soumission.' },
-        { q: 'Combien de temps faut-il ?', a: 'Cela dépend du travail — une réparation simple et une remise à neuf complète ne demandent pas le même temps. Appelez-nous pour connaître les délais du moment.' },
+        { q: 'Combien de temps faut-il ?', a: 'Les roues fissurées ou pliées sont souvent réparées sur place, le jour même ou en 24 h. Pour la peinture en poudre, comptez 3 à 5 jours ouvrables.' },
         { q: 'Toutes les roues sont-elles réparables ?', a: 'Non. C’est pourquoi chaque roue est évaluée avant le travail : nous vous disons ce qui est possible avant de commencer.' },
         { q: 'Puis-je choisir la couleur ?', a: 'Oui. Les réalisations publiées vont du noir lustré au noir satiné, en passant par le gris et l’argent. Parlez-nous de la finition souhaitée.' },
       ],
@@ -218,12 +221,12 @@ export const t = {
     configurator: {
       kicker: 'Atelier des finis', title: ['Choisissez', 'votre fini.'],
       lead: 'Du noir lustré au rouge lollipop : comparez les finis sur une même roue, puis réservez votre évaluation.',
-      choose: 'Finis', before: 'Avant', cta: 'Réserver avec ce fini',
+      choose: 'Finis', before: 'Avant', cta: 'Soumission pour ce fini',
       note: 'Rendus illustratifs générés pour la démonstration. Les teintes réelles vous sont présentées à l’atelier.',
     },
     marquee: ['Réparation de roues', 'Soudure', 'Peinture en poudre', 'Dommages de bordure', 'Roues fissurées', 'Saint-Laurent'],
     assistant: {
-      open: 'Réserver avec l’assistant', openShort: 'Réserver', title: 'Assistant RJ', status: 'En ligne', demo: 'IA', badge: 'IA',
+      open: 'Obtenir une soumission', openShort: 'Soumission', title: 'Assistant RJ', status: 'En ligne', demo: 'IA', badge: 'IA',
       privacy: 'Assistant IA. Vos informations sont transmises à RJ Welding & Wheels uniquement pour traiter votre demande.',
       errDown: 'L’assistant est momentanément indisponible. Joignez-nous directement :', errBusy: 'Beaucoup de demandes en ce moment. Réessayez dans un instant ou joignez-nous :',
       sentTitle: 'Demande envoyée', sentText: 'Rendez-vous demandé : {when}. L’atelier vous confirmera directement.', pending: 'à confirmer',
@@ -265,6 +268,28 @@ export const t = {
         { k: ['étrier', 'etrier', 'caliper', 'pneu', 'tire', 'garantie', 'warranty', 'paiement', 'carte', 'comptant'], a: null },
       ],
     },
+    extra: {
+      tabs: { services: 'Services', delais: 'Délais', photos: 'Photos', finis: 'Finis', apropos: 'À propos', methode: 'Méthode', avis: 'Avis & contact' },
+      photosCta: 'Envoyer des photos pour une soumission', photosCtaShort: 'Envoyer des photos',
+      times: { kicker: 'Délais', title: ['Rapide,', 'sans raccourcis.'], items: [
+        { big: '24 h', label: 'Roues fissurées ou pliées', note: 'Souvent réparées sur place, le jour même ou en 24 h.' },
+        { big: '3–5 j', label: 'Peinture en poudre', note: 'Jours ouvrables, de la préparation à la cuisson.' },
+        { big: 'Photo', label: 'Soumission', note: 'Envoyez une photo de la roue : nous vous répondons avec un prix.' },
+      ] },
+      photos: { kicker: 'Soumission', title: ['Une photo', 'suffit.'], text: 'Prenez la roue en photo — le dommage de près et la roue entière — et envoyez-la-nous. Nous vous répondons avec une soumission.',
+        whatsapp: 'WhatsApp', sms: 'Texto', form: 'Formulaire', assistant: 'Assistant IA', waText: 'Bonjour RJ Welding & Wheels, voici des photos de ma roue pour une soumission :' },
+      about: { kicker: 'À propos', title: ['Votre roue,', 'notre métier.'],
+        lead: 'RJ Welding & Wheels, à Saint-Laurent, est spécialisé dans la réparation de roues en alliage — fissurées, pliées ou marquées par la bordure — et la peinture en poudre sur mesure.',
+        body: 'Nids-de-poule, usure du quotidien ou simple envie d’un nouveau look : nous redonnons à vos roues leur allure. Nous sommes fiers de notre travail, attentifs aux détails, et nous voulons que chaque client se sente bien accueilli et en confiance.',
+        points: [
+          { t: 'Réparation spécialisée', d: 'Roues en alliage endommagées, fissurées ou pliées.' },
+          { t: 'Peinture en poudre sur mesure', d: 'Une finition qui vous ressemble.' },
+          { t: 'Souci du détail', d: 'La qualité dans chaque travail.' },
+          { t: 'Service personnel', d: 'Un accueil simple et chaleureux.' },
+        ],
+        sign: 'Vos roues. Notre savoir-faire. Votre satisfaction.' },
+      visit: { kicker: 'Avis & contact', title: ['Passez', 'nous voir.'], reviewsBtn: 'Lire les avis sur Google', reviewsOf: 'avis Google', call: 'Appeler', directions: 'Itinéraire', write: 'Écrire' },
+    },
     notFound: { title: 'Page introuvable | RJ Welding & Wheels', h1: ['Hors', 'piste.'], text: 'Cette page n’existe pas ou a été déplacée.', back: 'Retour à l’accueil' },
   },
 
@@ -283,14 +308,14 @@ export const t = {
     place: 'Saint-Laurent, Montréal',
     footer: { visit: 'Shop', talk: 'Contact', hours: 'Hours', follow: 'Follow', rights: 'All rights reserved.', photos: 'Images: AI-generated illustrations, for reference only.' },
     services: [
-      { id: 'bent', n: '01', name: 'Bent wheels', short: 'Straightening wheels bent or dented by a pothole or impact.', img: 'illus-straightening', illus: true, alt: 'Illustration: aluminium wheel on a straightening machine with a dial gauge',
-        long: 'One pothole can be enough to bend a rim: steering vibration, a tire that slowly loses air, uneven wear. We examine the wheel in the shop and straighten it when its condition allows.' },
-      { id: 'cracked', n: '02', name: 'Cracked wheels', short: 'Welding cracks in aluminium wheels.', img: 'illus-crack', illus: true, alt: 'Illustration: crack on the lip of an aluminium wheel',
-        long: 'A crack in an aluminium wheel does not go away on its own. Every wheel is assessed before repair: welding aluminium takes clean metal, careful preparation and a proper finish.' },
+      { id: 'bent', n: '01', name: 'Bent wheels', short: 'Straightening wheels bent or dented by a pothole or impact.', when: 'Same day · 24 h', img: 'illus-straightening', illus: true, alt: 'Illustration: aluminium wheel on a straightening machine with a dial gauge',
+        long: 'One pothole can be enough to bend a rim: steering vibration, a tire that slowly loses air, uneven wear. We examine the wheel in the shop and straighten it when its condition allows, often on the spot, same day or within 24 hours.' },
+      { id: 'cracked', n: '02', name: 'Cracked wheels', short: 'Welding cracks in aluminium wheels.', when: 'Same day · 24 h', img: 'illus-crack', illus: true, alt: 'Illustration: crack on the lip of an aluminium wheel',
+        long: 'A crack in an aluminium wheel does not go away on its own. Every wheel is assessed before repair: welding aluminium takes clean metal, careful preparation and a proper finish. Usually repaired on the spot, same day or within 24 hours.' },
       { id: 'curb', n: '03', name: 'Curb rash', short: 'Scrapes and chips on the lip, removed before refinishing.', img: 'illus-curb', illus: true, alt: 'Illustration: sanding a curb-damaged wheel lip',
         long: 'Scraping a curb scars the lip of the wheel. The damage is corrected and sanded, then the wheel is refinished for an even surface.' },
-      { id: 'powder', n: '04', name: 'Powder coating', short: 'A new finish, from gloss black to silver, oven-cured.', img: 'illus-booth', illus: true, alt: 'Illustration: wheel in the powder-coating booth',
-        long: 'Powder coat is applied electrostatically and then cured in an oven. It brings a tired wheel back to life, or changes its look completely — gloss black, satin black, grey, silver.' },
+      { id: 'powder', n: '04', name: 'Powder coating', short: 'A new finish, from gloss black to silver, oven-cured.', when: '3–5 business days', img: 'illus-booth', illus: true, alt: 'Illustration: wheel in the powder-coating booth',
+        long: 'Powder coat is applied electrostatically and then cured in an oven. It brings a tired wheel back to life, or changes its look completely — gloss black, two-tone, bronze, white, silver… Allow 3 to 5 business days.' },
       { id: 'welding', n: '05', name: 'Welding', short: 'Aluminium welding and other welding work.', img: 'illus-welding', illus: true, alt: 'Illustration: TIG welding a crack on the lip of an aluminium wheel',
         long: 'Beyond wheels, the shop takes on welding work, including aluminium. Tell us about your project and we will tell you what is possible.' },
     ],
@@ -323,7 +348,7 @@ export const t = {
       faqTitle: 'Common questions',
       faq: [
         { q: 'How much does a repair cost?', a: 'It depends on the condition of the wheel and the work needed. Send us photos or come by the shop for a quote.' },
-        { q: 'How long does it take?', a: 'It depends on the job — a simple repair and a full refinish don’t take the same time. Call us for current lead times.' },
+        { q: 'How long does it take?', a: 'Cracked or bent wheels are usually repaired on the spot, same day or within 24 hours. Powder coating takes 3 to 5 business days.' },
         { q: 'Can every wheel be repaired?', a: 'No. That’s why every wheel is assessed before any work: we tell you what’s possible before we start.' },
         { q: 'Can I choose the colour?', a: 'Yes. Published work ranges from gloss black and satin black to grey and silver. Tell us the finish you have in mind.' },
       ],
@@ -370,12 +395,12 @@ export const t = {
     configurator: {
       kicker: 'Finish studio', title: ['Choose', 'your finish.'],
       lead: 'From gloss black to lollipop red: compare finishes on the same wheel, then book your assessment.',
-      choose: 'Finishes', before: 'Before', cta: 'Book with this finish',
+      choose: 'Finishes', before: 'Before', cta: 'Quote for this finish',
       note: 'Illustrative renders generated for this demo. Real colours are shown to you at the shop.',
     },
     marquee: ['Wheel repair', 'Welding', 'Powder coating', 'Curb rash', 'Cracked wheels', 'Saint-Laurent'],
     assistant: {
-      open: 'Book with the assistant', openShort: 'Book', title: 'RJ Assistant', status: 'Online', demo: 'AI', badge: 'AI',
+      open: 'Get a quote', openShort: 'Quote', title: 'RJ Assistant', status: 'Online', demo: 'AI', badge: 'AI',
       privacy: 'AI assistant. Your details go to RJ Welding & Wheels only to handle your request.',
       errDown: 'The assistant is unavailable right now. Reach us directly:', errBusy: 'Lots of requests right now. Try again in a moment or reach us:',
       sentTitle: 'Request sent', sentText: 'Requested appointment: {when}. The shop will confirm with you directly.', pending: 'to be confirmed',
@@ -416,6 +441,28 @@ export const t = {
         { k: ['curb', 'scrape', 'scratch', 'lip'], a: 'Yes: curb damage is corrected and sanded, then the wheel is refinished for an even surface.' },
         { k: ['caliper', 'tire', 'tyre', 'warranty', 'payment', 'card', 'cash'], a: null },
       ],
+    },
+    extra: {
+      tabs: { services: 'Services', delais: 'Turnaround', photos: 'Photos', finis: 'Finishes', apropos: 'About', methode: 'Method', avis: 'Reviews & contact' },
+      photosCta: 'Send photos for a quote', photosCtaShort: 'Send photos',
+      times: { kicker: 'Turnaround', title: ['Fast,', 'no shortcuts.'], items: [
+        { big: '24 h', label: 'Cracked or bent wheels', note: 'Usually repaired on the spot, same day or within 24 hours.' },
+        { big: '3–5 d', label: 'Powder coating', note: 'Business days, from preparation to curing.' },
+        { big: 'Photo', label: 'Quote', note: 'Send a photo of the wheel: we reply with a price.' },
+      ] },
+      photos: { kicker: 'Quote', title: ['One photo', 'is enough.'], text: 'Take a photo of the wheel — the damage up close and the whole wheel — and send it to us. We reply with a quote.',
+        whatsapp: 'WhatsApp', sms: 'Text', form: 'Form', assistant: 'AI assistant', waText: 'Hi RJ Welding & Wheels, here are photos of my wheel for a quote:' },
+      about: { kicker: 'About', title: ['Your wheels,', 'our craft.'],
+        lead: 'RJ Welding & Wheels, in Saint-Laurent, specializes in alloy wheel repair — cracked, bent or curb-damaged — and custom powder coating.',
+        body: 'Potholes, everyday driving or simply the urge for a new look: we bring your wheels back to life. We take pride in our work, pay attention to the details, and want every customer to feel welcome and confident.',
+        points: [
+          { t: 'Specialized wheel repair', d: 'Damaged alloy wheels, cracked wheels and bent rims.' },
+          { t: 'Custom powder coating', d: 'A finish that matches your style.' },
+          { t: 'Attention to detail', d: 'Quality in every job.' },
+          { t: 'Friendly, personal service', d: 'A warm, straightforward welcome.' },
+        ],
+        sign: 'Your wheels. Our craft. Your satisfaction.' },
+      visit: { kicker: 'Reviews & contact', title: ['Come', 'see us.'], reviewsBtn: 'Read the reviews on Google', reviewsOf: 'Google reviews', call: 'Call', directions: 'Directions', write: 'Email' },
     },
     notFound: { title: 'Page not found | RJ Welding & Wheels', h1: ['Off', 'track.'], text: 'This page doesn’t exist or has moved.', back: 'Back to home' },
   },

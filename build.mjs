@@ -3,7 +3,7 @@
 import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { business as B, projects, routes, t, finishes } from './src/content.mjs';
+import { business as B, projects, routes, t, finishes, reviews } from './src/content.mjs';
 import { rjLogo } from './src/logo.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -91,6 +91,7 @@ function header(lang, key) {
   <div class="header-actions">
     <a class="lang" href="${routes[key][L.other]}" hreflang="${t[L.other].lang}" lang="${t[L.other].lang}" aria-label="${L.otherName}"><span aria-hidden="true">${lang.toUpperCase()}</span><i aria-hidden="true">/</i><span aria-hidden="true" class="lang-other">${L.otherLabel}</span></a>
     <a class="btn btn-ghost btn-sm header-call" href="${B.phoneHref}">${phoneI}<span>${B.phone}</span></a>
+    <a class="header-tel" href="${B.phoneHref}" aria-label="${L.cta.callFull} ${B.phone}">${phoneI}</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn><span class="sr">${L.menu}</span><i></i><i></i></button>
   </div>
 </header>
@@ -358,7 +359,7 @@ function workDialog(lang) {
 }
 
 function home(lang) {
-  const L = t[lang], H = L.home;
+  const L = t[lang], H = L.home, X = L.extra;
   const feature = projects.find((p) => p.slug === 'bmw-650i');
   const body = `
 <section class="hero" aria-labelledby="h1">
@@ -382,26 +383,25 @@ function home(lang) {
     <h1 id="h1" class="display hero-title">${H.h1.map((w, i) => `<span class="hero-line" style="--d:${200 + i * 110}ms"><span>${w}</span></span>`).join('')}</h1>
     <p class="lead hero-in" style="--d:560ms">${H.lead}</p>
     <div class="hero-actions hero-in" style="--d:660ms">
-      <a class="btn btn-red btn-lg magnetic" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${L.assistant.open}</span>${arrow}</a>
+      <a class="btn btn-red btn-lg magnetic" href="#photos">${cameraI}<span class="lbl-long">${X.photosCta}</span><span class="lbl-short" aria-hidden="true">${X.photosCtaShort}</span>${arrow}</a>
       <a class="btn btn-ghost btn-lg magnetic" href="${B.phoneHref}">${phoneI}<span>${B.phone}</span></a>
     </div>
   </div>
   <div class="wrap hero-foot hero-in" style="--d:800ms">
-    <a class="rating" href="${B.mapsUrl}" target="_blank" rel="noopener"><span class="stars" aria-hidden="true">★★★★★</span>${L.rating(B.rating)}<small>${L.ratingSeen}</small></a>
     <p>${L.tagline}</p>
     <span class="scroll-cue" aria-hidden="true"></span>
   </div>
 </section>
 
-<section class="statement" aria-label="${lang === 'fr' ? 'Notre approche' : 'Our approach'}">
-  <div class="wrap">
-    <p class="statement-text" data-words>${H.statement}</p>
+<nav class="sec-tabs" aria-label="${lang === 'fr' ? 'Sections de la page' : 'Page sections'}" data-sec-tabs>
+  <div class="sec-tabs-in">
+    ${Object.entries(X.tabs).map(([id, label]) => `<a href="#${id}" data-tab="${id}">${label}</a>`).join('')}
   </div>
-</section>
+</nav>
 
 ${marquee(lang)}
 
-<section class="services" aria-labelledby="services-title">
+<section class="services" id="services" aria-labelledby="services-title">
   <div class="wrap">
     <div class="section-head">
       <p class="kicker reveal">${H.servicesKicker}</p>
@@ -412,7 +412,7 @@ ${marquee(lang)}
         <a href="${routes.services[lang]}#${s.id}" data-img="${s.img ?? ''}">
           <span class="service-n">${s.n}</span>
           <span class="service-name">${s.name}</span>
-          <span class="service-short">${s.short}</span>
+          <span class="service-short">${s.short}${s.when ? `<em class="service-when">${s.when}</em>` : ''}</span>
           <span class="service-go">${arrow}</span>
         </a>
       </li>`).join('')}
@@ -424,23 +424,53 @@ ${marquee(lang)}
   </div>
 </section>
 
-${configurator(lang)}
 
-<section class="feature" aria-labelledby="feature-title">
-  <div class="feature-media reveal-media">
-    ${picture('illus-oven', { sizes: '(min-width: 900px) 50vw, 100vw', alt: H.featureAlt, cls: 'feature-img', attrs: 'data-parallax' })}
-    <span class="illus-tag">Illustration</span>
-  </div>
-  <div class="feature-copy">
-    <p class="kicker reveal">${H.featureKicker}</p>
-    <h2 id="feature-title" class="display feature-title reveal">${H.featureTitle.join('<br>')}</h2>
-    <p class="feature-service reveal">${H.featureService}</p>
-    <p class="feature-note reveal">${H.featureNote}</p>
-    <a class="link reveal" href="${routes.contact[lang]}" data-assistant>${L.assistant.open} ${arrow}</a>
+<section class="times" id="delais" aria-labelledby="times-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker reveal">${X.times.kicker}</p>
+      <h2 id="times-title" class="display section-title reveal">${X.times.title.join('<br>')}</h2>
+    </div>
+    <div class="times-grid">
+      ${X.times.items.map((it, i) => `<div class="time-card reveal" style="--d:${i * 90}ms"><b>${it.big}</b><h3>${it.label}</h3><p>${it.note}</p></div>`).join('')}
+    </div>
   </div>
 </section>
 
-<section class="method" aria-labelledby="method-title" data-method>
+<section class="photos-band" id="photos" aria-labelledby="photos-title">
+  <div class="wrap photos-inner">
+    <div>
+      <p class="kicker reveal">${X.photos.kicker}</p>
+      <h2 id="photos-title" class="display section-title reveal">${X.photos.title.join('<br>')}</h2>
+      <p class="photos-text reveal">${X.photos.text}</p>
+    </div>
+    <div class="photos-actions reveal">
+      <a class="btn btn-red btn-lg" href="https://wa.me/${B.whatsapp}?text=${encodeURIComponent(X.photos.waText)}" target="_blank" rel="noopener">${waI}<span>${X.photos.whatsapp}</span></a>
+      <a class="btn btn-ghost btn-lg" href="sms:+1${B.phone.replace(/\D/g, '')}?&body=${encodeURIComponent(X.photos.waText)}">${phoneI}<span>${X.photos.sms}</span></a>
+      <a class="btn btn-ghost btn-lg" href="${routes.contact[lang]}">${cameraI}<span>${X.photos.form}</span></a>
+      <a class="btn btn-ghost btn-lg" href="${routes.contact[lang]}" data-assistant>${sparkI}<span>${X.photos.assistant}</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="finis">${configurator(lang)}</div>
+
+<section class="about" id="apropos" aria-labelledby="about-title">
+  <div class="wrap about-grid">
+    <div>
+      <p class="kicker reveal">${X.about.kicker}</p>
+      <h2 id="about-title" class="display section-title reveal">${X.about.title.join('<br>')}</h2>
+    </div>
+    <div class="about-copy">
+      <p class="about-lead reveal">${X.about.lead}</p>
+      <p class="reveal">${X.about.body}</p>
+      <ul class="about-points">${X.about.points.map((pt, i) => `<li class="reveal" style="--d:${i * 70}ms"><b>${pt.t}</b><span>${pt.d}</span></li>`).join('')}</ul>
+      <p class="about-sign reveal">${X.about.sign}</p>
+    </div>
+  </div>
+</section>
+
+<section class="method" id="methode" aria-labelledby="method-title" data-method>
   <div class="wrap">
     <div class="section-head">
       <p class="kicker reveal">${H.methodKicker}</p>
@@ -459,18 +489,36 @@ ${configurator(lang)}
   </div>
 </section>
 
-<section class="ig-band" aria-labelledby="ig-title">
-  <div class="wrap ig-inner">
-    <div>
-      <p class="kicker reveal">Instagram</p>
-      <h2 id="ig-title" class="display section-title reveal">${H.igTitle}</h2>
-      <p class="fine reveal">${H.igNote}</p>
+<section class="visit" id="avis" aria-labelledby="visit-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker reveal">${X.visit.kicker}</p>
+      <h2 id="visit-title" class="display section-title reveal">${X.visit.title.join('<br>')}</h2>
     </div>
-    <a class="btn btn-ghost btn-lg reveal" href="${B.instagramUrl}" target="_blank" rel="noopener"><span>@${B.instagram}</span>${ext}</a>
+    <div class="visit-grid">
+      <div class="visit-reviews reveal">
+        <a class="visit-score" href="${B.mapsUrl}" target="_blank" rel="noopener">
+          <b>${lang === 'fr' ? B.rating.value : B.rating.valueEn}</b><span class="stars" aria-hidden="true">★★★★★</span>
+          <span>${B.rating.count} ${X.visit.reviewsOf}</span><small>${L.ratingSeen}</small>
+        </a>
+        ${reviews.length ? `<div class="review-list">${reviews.map((r) => `<figure class="review"><span class="stars" aria-hidden="true">${'★'.repeat(r.stars || 5)}</span><blockquote>${esc(r.text)}</blockquote><figcaption>${esc(r.name)} · Google</figcaption></figure>`).join('')}</div>` : ''}
+        <a class="btn btn-ghost" href="${B.mapsUrl}" target="_blank" rel="noopener"><span>${X.visit.reviewsBtn}</span>${ext}</a>
+      </div>
+      <div class="visit-card reveal">
+        <a class="contact-phone" href="${B.phoneHref}"><small>${X.visit.call}</small><span>${B.phone}</span></a>
+        <div class="cc-block"><h3 class="kicker">${L.footer.visit}</h3><address>${addressLines(lang)}</address></div>
+        <div class="cc-block"><h3 class="kicker">${L.footer.hours}</h3>${hoursList(lang)}</div>
+        <div class="visit-actions">
+          <a class="btn btn-red" href="${B.mapsUrl}" target="_blank" rel="noopener"><span>${X.visit.directions}</span>${ext}</a>
+          <a class="btn btn-ghost" href="https://wa.me/${B.whatsapp}?text=${encodeURIComponent(X.photos.waText)}" target="_blank" rel="noopener">${waI}<span>WhatsApp</span></a>
+          <a class="btn btn-ghost" href="mailto:${B.email}"><span>${X.visit.write}</span></a>
+          <a class="btn btn-ghost" href="${B.instagramUrl}" target="_blank" rel="noopener"><span>@${B.instagram}</span>${ext}</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
-
-${ctaBand(lang)}`;
+`;
   return layout({ lang, key: 'home', title: H.title, desc: H.desc, body, bodyClass: 'page-home' });
 }
 

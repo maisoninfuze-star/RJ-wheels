@@ -506,7 +506,7 @@ if (G && ST && !reduced) {
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -90 });
+      lenis.scrollTo(target, { offset: -(($('[data-sec-tabs]')?.offsetHeight || 0) + 80) });
     });
   }
 
@@ -576,4 +576,27 @@ if (G && ST && !reduced) {
 
   addEventListener('load', () => ST.refresh());
   document.fonts?.ready.then(() => ST.refresh());
+}
+
+// ---------- sticky section tabs: highlight the section in view ----------
+const tabs = $('[data-sec-tabs]');
+if (tabs) {
+  const links = $$('a[data-tab]', tabs);
+  const sections = links.map((a) => document.getElementById(a.dataset.tab)).filter(Boolean);
+  const setOn = (id) => links.forEach((a) => {
+    const on = a.dataset.tab === id;
+    a.classList.toggle('on', on);
+    if (on) {
+      a.setAttribute('aria-current', 'true');
+      const bar = a.parentElement; // scroll only the tab strip, never the page
+      bar.scrollTo({ left: a.offsetLeft - bar.clientWidth / 2 + a.offsetWidth / 2, behavior: reduced ? 'auto' : 'smooth' });
+    }
+    else a.removeAttribute('aria-current');
+  });
+  // A section counts as "current" when it crosses a band just below the tabs.
+  const io = new IntersectionObserver((entries) => {
+    const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+    if (vis) setOn(vis.target.id);
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach((sec) => io.observe(sec));
 }
