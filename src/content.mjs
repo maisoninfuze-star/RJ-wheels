@@ -111,9 +111,35 @@ export const finishes = [
 // Google review excerpts, added only with the owner's OK: { name: 'Prénom N.', text: '…', stars: 5 }.
 export const reviews = [];
 
+// Owner's price list (2026-11-02). Taxes extra. Shown on /tarifs/ and given to the assistant.
+export const pricing = {
+  repairs: [
+    { id: 'cracks', fr: { name: 'Soudure TIG de fissures', desc: 'Fissures causées par l’état des routes, la principale cause de fuites.', extra: 'Fissure supplémentaire sur la même roue : 20 $ + taxes chacune.', when: 'Réparation sur place, le jour même (environ 45 min à 1 h).' },
+      en: { name: 'TIG welding of cracks', desc: 'Cracks from road conditions, the main cause of leaks.', extra: 'Each additional crack on the same wheel: $20 + tax.', when: 'On-the-spot, same-day repair (about 45 min to 1 h).' },
+      prices: [{ fr: 'Sans pneu', en: 'Without tire', amount: 100, unit: 'wheel' }, { fr: 'Avec pneu', en: 'With tire', amount: 120, unit: 'wheel' }] },
+    { id: 'bends', fr: { name: 'Redressement de roues pliées', desc: 'Toutes les roues pliées ne sont pas réparables : contactez-nous pour vérifier. Le prix final est confirmé après inspection de la roue à l’atelier.', extra: '', when: 'Redressement sur place, le jour même (environ 45 min à 1 h).' },
+      en: { name: 'Straightening bent wheels', desc: 'Not every bend is repairable: contact us to check. The final price is confirmed once the wheel is inspected at the shop.', extra: '', when: 'On-the-spot, same-day straightening (about 45 min to 1 h).' },
+      prices: [{ fr: 'Sans pneu', en: 'Without tire', amount: 100, unit: 'wheel' }, { fr: 'Avec pneu', en: 'With tire', amount: 120, unit: 'wheel' }] },
+  ],
+  powder: {
+    black: [{ size: '15–17″', amount: 400 }, { size: '18–20″', amount: 450 }, { size: '21–22″', amount: 500 }],
+    metallicFrom: 600,
+    fr: { black: 'Roues noires', metallic: 'Couleurs métalliques / deux tons', from: 'À partir de', other: 'Pour toute autre couleur (argent, bronze, autres métalliques ou deux tons), contactez-nous pour un prix.', incl: 'Inclus : décapage chimique, sablage, prétraitement, réparation des petits dommages de bordure et peinture en poudre.' },
+    en: { black: 'Black wheels', metallic: 'Metallic / two-tone colours', from: 'From', other: 'For any other colour (silver, bronze, other metallic or two-tone), contact us for a price.', incl: 'Included: chemical stripping, media blasting, pre-treatment, minor curb rash repair and powder coating.' },
+  },
+  parts: [
+    { id: 'calipers', amount: 450, fr: { name: 'Étriers de frein', unit: 'pour un ensemble de 4', note: 'Retirez les étriers du véhicule et apportez seulement les étriers. Retirez toutes les pièces non métalliques, le caoutchouc et la quincaillerie interne (pistons, joints, joints toriques, etc.).' },
+      en: { name: 'Brake calipers', unit: 'for a set of 4', note: 'Remove the calipers from the vehicle and bring only the calipers. Remove all non-metal parts, rubber and internal hardware (pistons, rubber seals, O-rings, etc.).' } },
+    { id: 'moto', amount: 400, fr: { name: 'Roues de moto', unit: 'pour un ensemble de 2', note: '' }, en: { name: 'Motorcycle wheels', unit: 'for a set of 2', note: '' } },
+    { id: 'valve', amount: 250, fr: { name: 'Couvre-soupapes', unit: '', note: 'Retirez toutes les pièces non métalliques, le caoutchouc et les composants internes amovibles (joints, œillets, valve PCV, déflecteurs d’huile si amovibles) ainsi que tout résidu d’autocollant ou de scellant.' },
+      en: { name: 'Valve covers', unit: '', note: 'Remove all non-metal, rubber and loose internal components (gaskets, grommets, PCV valve, oil baffles if removable) and any sticker or sealant residue.' } },
+  ],
+};
+
 export const routes = {
   home: { fr: '/', en: '/en/' },
   services: { fr: '/services/', en: '/en/services/' },
+  pricing: { fr: '/tarifs/', en: '/en/pricing/' },
   work: { fr: '/realisations/', en: '/en/work/' },
   contact: { fr: '/contact/', en: '/en/contact/' },
 };
@@ -122,7 +148,7 @@ export const t = {
   fr: {
     lang: 'fr-CA', ogLocale: 'fr_CA', other: 'en', otherLabel: 'EN', otherName: 'English',
     skip: 'Aller au contenu',
-    nav: { home: 'Accueil', services: 'Services', work: 'Réalisations', contact: 'Contact' },
+    nav: { home: 'Accueil', services: 'Services', pricing: 'Tarifs', work: 'Réalisations', contact: 'Contact' },
     menu: 'Menu', close: 'Fermer',
     cta: { quote: 'Demander une soumission', quoteShort: 'Soumission', call: 'Appeler', callFull: 'Appeler l’atelier', directions: 'Itinéraire', ig: 'Voir sur Instagram', allWork: 'Toutes les réalisations', services: 'Nos services', viewPost: 'Voir la publication' },
     days: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
@@ -134,10 +160,10 @@ export const t = {
     place: 'Saint-Laurent, Montréal',
     footer: { visit: 'Atelier', talk: 'Contact', hours: 'Heures', follow: 'Suivre', rights: 'Tous droits réservés.', photos: 'Images : illustrations générées par IA, à titre indicatif.' },
     services: [
-      { id: 'bent', n: '01', name: 'Roues pliées', short: 'Redressement de jantes voilées ou bosselées après un nid-de-poule ou un choc.', when: 'Jour même · 24 h', img: 'illus-straightening', illus: true, alt: 'Illustration : roue en aluminium sur une machine de redressement avec comparateur',
-        long: 'Un nid-de-poule suffit parfois à voiler une jante : vibrations au volant, pneu qui perd de l’air, usure irrégulière. Nous examinons la roue à l’atelier et la redressons lorsque son état le permet, souvent sur place, le jour même ou en 24 h.' },
-      { id: 'cracked', n: '02', name: 'Roues fissurées', short: 'Soudure de fissures sur jantes en aluminium.', when: 'Jour même · 24 h', img: 'illus-crack', illus: true, alt: 'Illustration : fissure sur le rebord d’une jante en aluminium',
-        long: 'Une fissure sur une jante en aluminium ne disparaît pas d’elle-même. Chaque roue est évaluée avant la réparation : la soudure de l’aluminium demande un métal propre, une préparation minutieuse et une finition soignée. Réparation souvent sur place, le jour même ou en 24 h.' },
+      { id: 'bent', n: '01', name: 'Roues pliées', short: 'Redressement de jantes voilées ou bosselées après un nid-de-poule ou un choc.', when: 'Jour même · 45 min à 1 h', img: 'illus-straightening', illus: true, alt: 'Illustration : roue en aluminium sur une machine de redressement avec comparateur',
+        long: 'Un nid-de-poule suffit parfois à voiler une jante : vibrations au volant, pneu qui perd de l’air, usure irrégulière. Nous examinons la roue à l’atelier et la redressons lorsque son état le permet, souvent sur place, le jour même (environ 45 min à 1 h).' },
+      { id: 'cracked', n: '02', name: 'Roues fissurées', short: 'Soudure de fissures sur jantes en aluminium.', when: 'Jour même · 45 min à 1 h', img: 'illus-crack', illus: true, alt: 'Illustration : fissure sur le rebord d’une jante en aluminium',
+        long: 'Une fissure sur une jante en aluminium ne disparaît pas d’elle-même. Chaque roue est évaluée avant la réparation : la soudure de l’aluminium demande un métal propre, une préparation minutieuse et une finition soignée. Réparation souvent sur place, le jour même (environ 45 min à 1 h).' },
       { id: 'curb', n: '03', name: 'Dommages de bordure', short: 'Égratignures et éclats sur le rebord, effacés avant la finition.', img: 'illus-curb', illus: true, alt: 'Illustration : ponçage d’un rebord de jante abîmé par la bordure',
         long: 'Les frottements contre la bordure marquent le rebord de la jante. Le dommage est corrigé et poncé, puis la roue est refinie pour une surface uniforme.' },
       { id: 'powder', n: '04', name: 'Peinture en poudre', short: 'Une nouvelle finition, du noir lustré à l’argent, cuite au four.', when: '3–5 jours ouvrables', img: 'illus-booth', illus: true, alt: 'Illustration : roue en cabine de peinture en poudre',
@@ -173,8 +199,8 @@ export const t = {
       lead: 'Cinq savoir-faire, un seul atelier à Saint-Laurent. Chaque demande commence par un diagnostic de la roue.',
       faqTitle: 'Questions fréquentes',
       faq: [
-        { q: 'Combien coûte une réparation ?', a: 'Le prix dépend de l’état de la roue et du travail demandé. Envoyez-nous des photos ou passez à l’atelier pour une soumission.' },
-        { q: 'Combien de temps faut-il ?', a: 'Les roues fissurées ou pliées sont souvent réparées sur place, le jour même ou en 24 h. Pour la peinture en poudre, comptez 3 à 5 jours ouvrables.' },
+        { q: 'Combien coûte une réparation ?', a: 'Soudure d’une fissure ou redressement : 100 $ + taxes par roue sans pneu, 120 $ + taxes avec pneu. Peinture en poudre noire à partir de 400 $ + taxes. Tous les prix sont sur la page Tarifs.' },
+        { q: 'Combien de temps faut-il ?', a: 'Les fissures et le redressement se font sur place, le jour même (environ 45 min à 1 h). Pour la peinture en poudre, comptez 3 à 5 jours ouvrables.' },
         { q: 'Toutes les roues sont-elles réparables ?', a: 'Non. C’est pourquoi chaque roue est évaluée avant le travail : nous vous disons ce qui est possible avant de commencer.' },
         { q: 'Puis-je choisir la couleur ?', a: 'Oui. Les réalisations publiées vont du noir lustré au noir satiné, en passant par le gris et l’argent. Parlez-nous de la finition souhaitée.' },
       ],
@@ -269,12 +295,12 @@ export const t = {
       ],
     },
     extra: {
-      tabs: { services: 'Services', delais: 'Délais', photos: 'Photos', finis: 'Finis', apropos: 'À propos', methode: 'Méthode', avis: 'Avis & contact' },
+      tabs: { services: 'Services', tarifs: 'Tarifs', delais: 'Délais', photos: 'Photos', finis: 'Finis', apropos: 'À propos', methode: 'Méthode', avis: 'Avis & contact' },
       photosCta: 'Envoyer des photos pour une soumission', photosCtaShort: 'Envoyer des photos',
       times: { kicker: 'Délais', title: ['Rapide,', 'sans raccourcis.'], items: [
-        { big: '24 h', label: 'Roues fissurées ou pliées', note: 'Souvent réparées sur place, le jour même ou en 24 h.' },
+        { big: '1 h', label: 'Roues fissurées ou pliées', note: 'Réparées sur place, le jour même : environ 45 min à 1 h.' },
         { big: '3–5 j', label: 'Peinture en poudre', note: 'Jours ouvrables, de la préparation à la cuisson.' },
-        { big: 'Photo', label: 'Soumission', note: 'Envoyez une photo de la roue : nous vous répondons avec un prix.' },
+        { big: '100 $', label: 'À partir de', note: 'Par roue pour une fissure ou un redressement (+ taxes). Voir tous les tarifs.' },
       ] },
       photos: { kicker: 'Soumission', title: ['Une photo', 'suffit.'], text: 'Prenez la roue en photo — le dommage de près et la roue entière — et envoyez-la-nous. Nous vous répondons avec une soumission.',
         whatsapp: 'WhatsApp', sms: 'Texto', form: 'Formulaire', assistant: 'Assistant IA', waText: 'Bonjour RJ Welding & Wheels, voici des photos de ma roue pour une soumission :' },
@@ -296,7 +322,7 @@ export const t = {
   en: {
     lang: 'en-CA', ogLocale: 'en_CA', other: 'fr', otherLabel: 'FR', otherName: 'Français',
     skip: 'Skip to content',
-    nav: { home: 'Home', services: 'Services', work: 'Work', contact: 'Contact' },
+    nav: { home: 'Home', services: 'Services', pricing: 'Pricing', work: 'Work', contact: 'Contact' },
     menu: 'Menu', close: 'Close',
     cta: { quote: 'Request a quote', quoteShort: 'Get a quote', call: 'Call', callFull: 'Call the shop', directions: 'Directions', ig: 'View on Instagram', allWork: 'See all work', services: 'Our services', viewPost: 'View the post' },
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -308,10 +334,10 @@ export const t = {
     place: 'Saint-Laurent, Montréal',
     footer: { visit: 'Shop', talk: 'Contact', hours: 'Hours', follow: 'Follow', rights: 'All rights reserved.', photos: 'Images: AI-generated illustrations, for reference only.' },
     services: [
-      { id: 'bent', n: '01', name: 'Bent wheels', short: 'Straightening wheels bent or dented by a pothole or impact.', when: 'Same day · 24 h', img: 'illus-straightening', illus: true, alt: 'Illustration: aluminium wheel on a straightening machine with a dial gauge',
-        long: 'One pothole can be enough to bend a rim: steering vibration, a tire that slowly loses air, uneven wear. We examine the wheel in the shop and straighten it when its condition allows, often on the spot, same day or within 24 hours.' },
-      { id: 'cracked', n: '02', name: 'Cracked wheels', short: 'Welding cracks in aluminium wheels.', when: 'Same day · 24 h', img: 'illus-crack', illus: true, alt: 'Illustration: crack on the lip of an aluminium wheel',
-        long: 'A crack in an aluminium wheel does not go away on its own. Every wheel is assessed before repair: welding aluminium takes clean metal, careful preparation and a proper finish. Usually repaired on the spot, same day or within 24 hours.' },
+      { id: 'bent', n: '01', name: 'Bent wheels', short: 'Straightening wheels bent or dented by a pothole or impact.', when: 'Same day · 45 min–1 h', img: 'illus-straightening', illus: true, alt: 'Illustration: aluminium wheel on a straightening machine with a dial gauge',
+        long: 'One pothole can be enough to bend a rim: steering vibration, a tire that slowly loses air, uneven wear. We examine the wheel in the shop and straighten it when its condition allows, often on the spot, same day (about 45 min to 1 h).' },
+      { id: 'cracked', n: '02', name: 'Cracked wheels', short: 'Welding cracks in aluminium wheels.', when: 'Same day · 45 min–1 h', img: 'illus-crack', illus: true, alt: 'Illustration: crack on the lip of an aluminium wheel',
+        long: 'A crack in an aluminium wheel does not go away on its own. Every wheel is assessed before repair: welding aluminium takes clean metal, careful preparation and a proper finish. Repaired on the spot, same day (about 45 min to 1 h).' },
       { id: 'curb', n: '03', name: 'Curb rash', short: 'Scrapes and chips on the lip, removed before refinishing.', img: 'illus-curb', illus: true, alt: 'Illustration: sanding a curb-damaged wheel lip',
         long: 'Scraping a curb scars the lip of the wheel. The damage is corrected and sanded, then the wheel is refinished for an even surface.' },
       { id: 'powder', n: '04', name: 'Powder coating', short: 'A new finish, from gloss black to silver, oven-cured.', when: '3–5 business days', img: 'illus-booth', illus: true, alt: 'Illustration: wheel in the powder-coating booth',
@@ -347,8 +373,8 @@ export const t = {
       lead: 'Five crafts, one shop in Saint-Laurent. Every job starts with a diagnosis of the wheel.',
       faqTitle: 'Common questions',
       faq: [
-        { q: 'How much does a repair cost?', a: 'It depends on the condition of the wheel and the work needed. Send us photos or come by the shop for a quote.' },
-        { q: 'How long does it take?', a: 'Cracked or bent wheels are usually repaired on the spot, same day or within 24 hours. Powder coating takes 3 to 5 business days.' },
+        { q: 'How much does a repair cost?', a: 'Crack welding or straightening: $100 + tax per wheel without tire, $120 + tax with tire. Black powder coating from $400 + tax. All prices are on the Pricing page.' },
+        { q: 'How long does it take?', a: 'Crack welding and straightening are done on the spot, same day (about 45 min to 1 h). Powder coating takes 3 to 5 business days.' },
         { q: 'Can every wheel be repaired?', a: 'No. That’s why every wheel is assessed before any work: we tell you what’s possible before we start.' },
         { q: 'Can I choose the colour?', a: 'Yes. Published work ranges from gloss black and satin black to grey and silver. Tell us the finish you have in mind.' },
       ],
@@ -443,12 +469,12 @@ export const t = {
       ],
     },
     extra: {
-      tabs: { services: 'Services', delais: 'Turnaround', photos: 'Photos', finis: 'Finishes', apropos: 'About', methode: 'Method', avis: 'Reviews & contact' },
+      tabs: { services: 'Services', tarifs: 'Pricing', delais: 'Turnaround', photos: 'Photos', finis: 'Finishes', apropos: 'About', methode: 'Method', avis: 'Reviews & contact' },
       photosCta: 'Send photos for a quote', photosCtaShort: 'Send photos',
       times: { kicker: 'Turnaround', title: ['Fast,', 'no shortcuts.'], items: [
-        { big: '24 h', label: 'Cracked or bent wheels', note: 'Usually repaired on the spot, same day or within 24 hours.' },
+        { big: '1 h', label: 'Cracked or bent wheels', note: 'Repaired on the spot, same day: about 45 min to 1 h.' },
         { big: '3–5 d', label: 'Powder coating', note: 'Business days, from preparation to curing.' },
-        { big: 'Photo', label: 'Quote', note: 'Send a photo of the wheel: we reply with a price.' },
+        { big: '$100', label: 'Starting at', note: 'Per wheel for a crack or a bend (+ tax). See all prices.' },
       ] },
       photos: { kicker: 'Quote', title: ['One photo', 'is enough.'], text: 'Take a photo of the wheel — the damage up close and the whole wheel — and send it to us. We reply with a quote.',
         whatsapp: 'WhatsApp', sms: 'Text', form: 'Form', assistant: 'AI assistant', waText: 'Hi RJ Welding & Wheels, here are photos of my wheel for a quote:' },

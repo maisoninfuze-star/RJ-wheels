@@ -3,7 +3,7 @@
 import { mkdir, writeFile, cp, rm, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { business as B, projects, routes, t, finishes, reviews } from './src/content.mjs';
+import { business as B, projects, routes, t, finishes, reviews, pricing as PR } from './src/content.mjs';
 import { rjLogo } from './src/logo.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -83,7 +83,7 @@ const phoneI = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M
 
 function header(lang, key) {
   const L = t[lang];
-  const links = ['services', 'contact'].map((k) => `<a href="${routes[k][lang]}"${k === key ? ' aria-current="page"' : ''}>${L.nav[k]}</a>`).join('');
+  const links = ['services', 'pricing', 'contact'].map((k) => `<a href="${routes[k][lang]}"${k === key ? ' aria-current="page"' : ''}>${L.nav[k]}</a>`).join('');
   return `<a class="skip" href="#main">${L.skip}</a>
 <header class="site-header" data-header>
   ${logo(lang)}
@@ -97,7 +97,7 @@ function header(lang, key) {
 </header>
 <div class="menu" id="menu" data-menu hidden>
   <nav class="menu-nav" aria-label="${L.menu}">
-    ${['home', 'services', 'contact'].map((k, i) => `<a href="${routes[k][lang]}" style="--i:${i}"${k === key ? ' aria-current="page"' : ''}><small>0${i + 1}</small>${L.nav[k]}</a>`).join('')}
+    ${['home', 'services', 'pricing', 'contact'].map((k, i) => `<a href="${routes[k][lang]}" style="--i:${i}"${k === key ? ' aria-current="page"' : ''}><small>0${i + 1}</small>${L.nav[k]}</a>`).join('')}
   </nav>
   <div class="menu-foot">
     <a href="${B.phoneHref}">${B.phone}</a>
@@ -306,6 +306,93 @@ ${assistantShell(lang)}
 
 // ---------- pages ----------
 
+const money = (n, lang) => (lang === 'fr' ? `${n} $` : `$${n}`);
+const PT = {
+  fr: { title: 'Tarifs — Réparation de roues et peinture en poudre | RJ Welding & Wheels', desc: 'Prix de RJ Welding & Wheels : soudure de fissures et redressement dès 100 $ + taxes par roue, peinture en poudre dès 400 $ + taxes. Saint-Laurent, Montréal.',
+    kicker: 'Tarifs', h1: ['Des prix', 'clairs.'], lead: 'Taxes en sus. Envoyez des photos de votre roue pour confirmer le prix avant de passer.',
+    repairs: 'Réparations', perWheel: '+ taxes / roue', tax: '+ taxes', powder: 'Peinture en poudre', parts: 'Autres pièces en peinture en poudre', partsNote: 'Préparation par le client avant le dépôt.',
+    teaserKicker: 'Tarifs', teaserTitle: ['Le prix,', 'avant de venir.'], all: 'Voir tous les tarifs', from: 'À partir de' },
+  en: { title: 'Pricing — Wheel repair and powder coating | RJ Welding & Wheels', desc: 'RJ Welding & Wheels prices: crack welding and straightening from $100 + tax per wheel, powder coating from $400 + tax. Saint-Laurent, Montréal.',
+    kicker: 'Pricing', h1: ['Clear', 'prices.'], lead: 'Taxes extra. Send photos of your wheel to confirm the price before you come in.',
+    repairs: 'Repairs', perWheel: '+ tax / wheel', tax: '+ tax', powder: 'Powder coating', parts: 'Other powder-coated parts', partsNote: 'Prepared by the customer before drop-off.',
+    teaserKicker: 'Pricing', teaserTitle: ['The price,', 'before you come in.'], all: 'See all prices', from: 'From' },
+};
+
+function pricingBlocks(lang) {
+  const P = PT[lang], W = PR.powder[lang];
+  return `<div class="price-group">
+    <h2 class="kicker">${P.repairs}</h2>
+    ${PR.repairs.map((r, i) => `<article class="price-row reveal">
+      <span class="price-n">0${i + 1}</span>
+      <div class="price-main">
+        <h3 class="display">${r[lang].name}</h3>
+        <p>${r[lang].desc}</p>
+        ${r[lang].extra ? `<p class="price-extra">${r[lang].extra}</p>` : ''}
+        <span class="service-when">${r[lang].when}</span>
+      </div>
+      <dl class="price-tags">${r.prices.map((x) => `<div><dt>${x[lang]}</dt><dd><b>${money(x.amount, lang)}</b> ${P.perWheel}</dd></div>`).join('')}</dl>
+    </article>`).join('')}
+  </div>
+  <div class="price-group">
+    <h2 class="kicker">${P.powder}</h2>
+    <div class="powder-grid">
+      <article class="price-card reveal">
+        <h3 class="display">${W.black}</h3>
+        <dl class="size-table">${PR.powder.black.map((b) => `<div><dt>${b.size}</dt><dd><b>${money(b.amount, lang)}</b> ${P.tax}</dd></div>`).join('')}</dl>
+      </article>
+      <article class="price-card reveal">
+        <h3 class="display">${W.metallic}</h3>
+        <p class="price-from">${W.from} <b>${money(PR.powder.metallicFrom, lang)}</b> ${P.tax}</p>
+        <p>${W.other}</p>
+      </article>
+    </div>
+    <p class="price-incl reveal">${W.incl}</p>
+  </div>
+  <div class="price-group">
+    <h2 class="kicker">${P.parts}</h2>
+    <div class="parts-grid">
+      ${PR.parts.map((x) => `<article class="price-card reveal">
+        <h3 class="display">${x[lang].name}</h3>
+        <p class="price-from"><b>${money(x.amount, lang)}</b> ${P.tax}${x[lang].unit ? ` · ${x[lang].unit}` : ''}</p>
+        ${x[lang].note ? `<p class="fine">${x[lang].note}</p>` : ''}
+      </article>`).join('')}
+    </div>
+    <p class="fine">${P.partsNote}</p>
+  </div>`;
+}
+
+function pricingPage(lang) {
+  const P = PT[lang];
+  const body = `${pageHead(lang, P)}
+<section class="wrap pricing">${pricingBlocks(lang)}</section>
+${ctaBand(lang)}`;
+  return layout({ lang, key: 'pricing', title: P.title, desc: P.desc, body, bodyClass: 'page-pricing' });
+}
+
+function pricingTeaser(lang) {
+  const P = PT[lang];
+  const items = [
+    [PR.repairs[0][lang].name, PR.repairs[0].prices[0].amount, P.perWheel],
+    [PR.repairs[1][lang].name, PR.repairs[1].prices[0].amount, P.perWheel],
+    [PR.powder[lang].black, PR.powder.black[0].amount, P.tax],
+  ];
+  return `<section class="tarifs" id="tarifs" aria-labelledby="tarifs-title">
+  <div class="wrap">
+    <div class="section-head section-head-row">
+      <div>
+        <p class="kicker reveal">${P.teaserKicker}</p>
+        <h2 id="tarifs-title" class="display section-title reveal">${P.teaserTitle.join('<br>')}</h2>
+      </div>
+      <a class="btn btn-ghost reveal" href="${routes.pricing[lang]}"><span>${P.all}</span>${arrow}</a>
+    </div>
+    <div class="times-grid">
+      ${items.map(([name, amount, unit], i) => `<a class="time-card price-teaser reveal" style="--d:${i * 90}ms" href="${routes.pricing[lang]}"><small>${P.from}</small><b>${money(amount, lang)}</b><h3>${name}</h3><p>${unit}</p></a>`).join('')}
+    </div>
+    <p class="fine reveal">${PR.powder[lang].incl}</p>
+  </div>
+</section>`;
+}
+
 function ctaBand(lang) {
   const L = t[lang];
   return `<section class="cta-band" aria-labelledby="cta-${lang}">
@@ -424,6 +511,8 @@ ${marquee(lang)}
   </div>
 </section>
 
+
+${pricingTeaser(lang)}
 
 <section class="times" id="delais" aria-labelledby="times-title">
   <div class="wrap">
@@ -703,6 +792,7 @@ await cp(join(ROOT, 'public'), OUT, { recursive: true });
 for (const lang of ['fr', 'en']) {
   await page(routes.home[lang], home(lang));
   await page(routes.services[lang], servicesPage(lang));
+  await page(routes.pricing[lang], pricingPage(lang));
   // Réalisations page paused until the owner supplies quality photos (workPage() kept for later).
   await page(routes.contact[lang], contactPage(lang));
 }

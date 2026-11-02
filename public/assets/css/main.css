@@ -823,3 +823,35 @@ html.as-lock, html.as-lock body { overflow: hidden; }
   .lbl-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .lbl-short { display: inline; }
 }
+
+/* ---------- Pricing ---------- */
+.pricing { padding-top: clamp(48px, 7vw, 90px); padding-bottom: clamp(80px, 10vw, 140px); display: grid; gap: clamp(56px, 7vw, 96px); }
+.price-group { display: grid; gap: 16px; }
+.price-row { display: grid; grid-template-columns: 44px 1fr; gap: 6px 14px; padding: 26px 0; border-top: 1px solid var(--line); }
+.price-row:last-child { border-bottom: 1px solid var(--line); }
+.price-n { font: 600 clamp(28px, 4vw, 52px)/1 var(--f-display); color: var(--graphite-2); -webkit-text-stroke: 1px var(--steel); }
+.price-main h3 { font-size: clamp(30px, 4vw, 48px); margin-bottom: 10px; }
+.price-main p { margin: 0 0 8px; color: var(--silver); max-width: 60ch; }
+.price-extra { color: var(--paper) !important; }
+.price-tags { grid-column: 2; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.price-tags div, .size-table div { display: grid; gap: 2px; padding: 12px 16px; border: 1px solid var(--line-2); background: var(--ink); min-width: 170px; }
+.price-tags dt, .size-table dt { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--steel); }
+.price-tags dd, .size-table dd { margin: 0; color: var(--silver); }
+.price-tags b, .size-table b, .price-from b { font: 600 32px/1 var(--f-display); color: var(--paper); }
+@media (min-width: 900px) {
+  .price-row { grid-template-columns: 90px 1fr auto; align-items: center; }
+  .price-tags { grid-column: 3; flex-direction: column; margin: 0; }
+}
+.powder-grid, .parts-grid { display: grid; gap: 16px; }
+@media (min-width: 800px) { .powder-grid { grid-template-columns: 1fr 1fr; } .parts-grid { grid-template-columns: repeat(3, 1fr); } }
+.price-card { padding: 26px; border: 1px solid var(--line); background: var(--ink); display: grid; gap: 12px; align-content: start; }
+.price-card h3 { font-size: clamp(26px, 3vw, 36px); }
+.price-card p { margin: 0; color: var(--silver); }
+.size-table { margin: 0; display: grid; gap: 8px; }
+.size-table div { grid-template-columns: 1fr auto; align-items: baseline; }
+.price-incl { margin: 4px 0 0; padding: 16px 18px; border-left: 2px solid var(--brand-red); background: var(--ink); color: var(--paper); }
+.tarifs { padding: clamp(80px, 10vw, 140px) 0; border-top: 1px solid var(--line); }
+.tarifs .fine { margin-top: 18px; }
+.price-teaser { display: block; transition: border-color .3s; }
+.price-teaser:hover { border-color: var(--red); }
+.price-teaser small { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--steel); margin-bottom: 6px; }

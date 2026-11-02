@@ -118,3 +118,9 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 - **About text**: supplied by the client, adapted in FR/EN for the "À propos" section.
 - **Official domain**: rjwheels.ca (canonical, sitemap and structured data). Redirect www.rjwheels.ca and rjweldingandwheels.com to it in Vercel → Domains.
 - **Still needed from the owner**: real photos (work, shop, owner), price ranges, the owner's name, years of experience and photo, approval to quote 3–4 Google reviews (`reviews` in src/content.mjs), FAQ answers (is a welded wheel safe? tires removed? motorcycles/trucks/dealers? wheel sizes? warranty?), whether the shop number accepts SMS/WhatsApp, and whether quotes are free.
+
+## 9. Price list from the owner (2026-11-02)
+- Crack welding (TIG) and straightening: $100 + tax per wheel without tire, $120 with tire; each extra crack on the same wheel $20 + tax; same day, about 45 min to 1 h. Bends: final price after inspection.
+- Powder coating, black wheels: 15–17″ $400, 18–20″ $450, 21–22″ $500 (+ tax). **Per wheel or per set? To confirm.** Metallic/two-tone from $600 + tax; other colours on request. Included: chemical stripping, media blasting, pre-treatment, minor curb rash repair, powder coating.
+- Other parts: brake calipers $450 + tax (set of 4), motorcycle wheels $400 + tax (set of 2), valve covers $250 + tax.
+- **Correction:** brake caliper powder coating **is** an RJ service (owner's price list), unlike the earlier note based on the 2025 Westside Customs collab.
