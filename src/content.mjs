@@ -122,10 +122,9 @@ export const pricing = {
       prices: [{ fr: 'Sans pneu', en: 'Without tire', amount: 100, unit: 'wheel' }, { fr: 'Avec pneu', en: 'With tire', amount: 120, unit: 'wheel' }] },
   ],
   powder: {
-    black: [{ size: '15–17″', amount: 400 }, { size: '18–20″', amount: 450 }, { size: '21–22″', amount: 500 }],
-    metallicFrom: 600,
-    fr: { black: 'Roues noires', metallic: 'Couleurs métalliques / deux tons', from: 'À partir de', other: 'Pour toute autre couleur (argent, bronze, autres métalliques ou deux tons), contactez-nous pour un prix.', incl: 'Inclus : décapage chimique, sablage, prétraitement, réparation des petits dommages de bordure et peinture en poudre.' },
-    en: { black: 'Black wheels', metallic: 'Metallic / two-tone colours', from: 'From', other: 'For any other colour (silver, bronze, other metallic or two-tone), contact us for a price.', incl: 'Included: chemical stripping, media blasting, pre-treatment, minor curb rash repair and powder coating.' },
+    black: 400, metallic: 600, twoTone: 700,
+    fr: { black: 'Roues noires', metallic: 'Couleurs métalliques', twoTone: 'Deux tons', note: 'Le prix peut varier selon la roue (mag) et sa taille. Confirmez-le en nous envoyant une photo.', other: 'Pour toute autre couleur, contactez-nous pour un prix.', incl: 'Inclus : décapage chimique, sablage, prétraitement, réparation des petits dommages de bordure et peinture en poudre.' },
+    en: { black: 'Black wheels', metallic: 'Metallic colours', twoTone: 'Two-tone', note: 'The price may vary with the wheel (mag) and its size. Confirm it by sending us a photo.', other: 'For any other colour, contact us for a price.', incl: 'Included: chemical stripping, media blasting, pre-treatment, minor curb rash repair and powder coating.' },
   },
   parts: [
     { id: 'calipers', amount: 450, fr: { name: 'Étriers de frein', unit: 'pour un ensemble de 4', note: 'Retirez les étriers du véhicule et apportez seulement les étriers. Retirez toutes les pièces non métalliques, le caoutchouc et la quincaillerie interne (pistons, joints, joints toriques, etc.).' },
@@ -199,7 +198,7 @@ export const t = {
       lead: 'Cinq savoir-faire, un seul atelier à Saint-Laurent. Chaque demande commence par un diagnostic de la roue.',
       faqTitle: 'Questions fréquentes',
       faq: [
-        { q: 'Combien coûte une réparation ?', a: 'Soudure d’une fissure ou redressement : 100 $ + taxes par roue sans pneu, 120 $ + taxes avec pneu. Peinture en poudre noire à partir de 400 $ + taxes. Tous les prix sont sur la page Tarifs.' },
+        { q: 'Combien coûte une réparation ?', a: 'Soudure d’une fissure ou redressement : 100 $ + taxes par roue sans pneu, 120 $ + taxes avec pneu. Peinture en poudre : noir 400 $, métallique 600 $, deux tons 700 $ (+ taxes; le prix peut varier selon la roue et sa taille). Tous les prix sont sur la page Tarifs.' },
         { q: 'Combien de temps faut-il ?', a: 'Les fissures et le redressement se font sur place, le jour même (environ 45 min à 1 h). Pour la peinture en poudre, comptez 3 à 5 jours ouvrables.' },
         { q: 'Toutes les roues sont-elles réparables ?', a: 'Non. C’est pourquoi chaque roue est évaluée avant le travail : nous vous disons ce qui est possible avant de commencer.' },
         { q: 'Puis-je choisir la couleur ?', a: 'Oui. Les réalisations publiées vont du noir lustré au noir satiné, en passant par le gris et l’argent. Parlez-nous de la finition souhaitée.' },
@@ -247,7 +246,7 @@ export const t = {
     configurator: {
       kicker: 'Atelier des finis', title: ['Choisissez', 'votre fini.'],
       lead: 'Du noir lustré au rouge lollipop : comparez les finis sur une même roue, puis réservez votre évaluation.',
-      choose: 'Finis', before: 'Avant', cta: 'Soumission pour ce fini',
+      choose: 'Finis', before: 'Avant', cta: 'Ce fini sur WhatsApp',
       note: 'Rendus illustratifs générés pour la démonstration. Les teintes réelles vous sont présentées à l’atelier.',
     },
     marquee: ['Réparation de roues', 'Soudure', 'Peinture en poudre', 'Dommages de bordure', 'Roues fissurées', 'Saint-Laurent'],
@@ -258,6 +257,7 @@ export const t = {
       sentTitle: 'Demande envoyée', sentText: 'Rendez-vous demandé : {when}. L’atelier vous confirmera directement.', pending: 'à confirmer',
       photosHeld: 'Photo(s) gardée(s) : {n}. Elles seront envoyées avec votre demande.', photosSent: '{n} photo(s) envoyée(s) à l’atelier avec la demande {ref}.', photosFailed: 'Les photos n’ont pas pu être envoyées. Vous pourrez les montrer à l’atelier.',
       finishOpener: 'Je suis intéressé(e) par le fini {f}.',
+      waSend: 'Envoyer aussi sur WhatsApp', waBooking: 'Bonjour RJ Welding & Wheels, demande {ref} : {service}, le {when}. Je vous envoie mes photos ici.',
       placeholder: 'Écrivez votre message…', send: 'Envoyer', attach: 'Ajouter des photos', close: 'Fermer l’assistant', restart: 'Recommencer',
       greet: 'Bonjour! Je suis l’assistant IA de RJ Welding & Wheels. Posez-moi vos questions sur nos services, ou demandons ensemble un rendez-vous d’évaluation.',
       greetFinish: (f) => `Bonjour! Excellent choix : ${f}. Je vais réserver votre rendez-vous d’évaluation en quelques étapes.`,
@@ -295,7 +295,7 @@ export const t = {
       ],
     },
     extra: {
-      tabs: { services: 'Services', tarifs: 'Tarifs', delais: 'Délais', photos: 'Photos', finis: 'Finis', apropos: 'À propos', methode: 'Méthode', avis: 'Avis & contact' },
+      tabs: { services: 'Services', tarifs: 'Tarifs', delais: 'Délais', photos: 'Photos', apropos: 'À propos', methode: 'Méthode', avis: 'Avis & contact' },
       photosCta: 'Envoyer des photos pour une soumission', photosCtaShort: 'Envoyer des photos',
       times: { kicker: 'Délais', title: ['Rapide,', 'sans raccourcis.'], items: [
         { big: '1 h', label: 'Roues fissurées ou pliées', note: 'Réparées sur place, le jour même : environ 45 min à 1 h.' },
@@ -373,7 +373,7 @@ export const t = {
       lead: 'Five crafts, one shop in Saint-Laurent. Every job starts with a diagnosis of the wheel.',
       faqTitle: 'Common questions',
       faq: [
-        { q: 'How much does a repair cost?', a: 'Crack welding or straightening: $100 + tax per wheel without tire, $120 + tax with tire. Black powder coating from $400 + tax. All prices are on the Pricing page.' },
+        { q: 'How much does a repair cost?', a: 'Crack welding or straightening: $100 + tax per wheel without tire, $120 + tax with tire. Powder coating: black $400, metallic $600, two-tone $700 (+ tax; price may vary with the wheel and its size). All prices are on the Pricing page.' },
         { q: 'How long does it take?', a: 'Crack welding and straightening are done on the spot, same day (about 45 min to 1 h). Powder coating takes 3 to 5 business days.' },
         { q: 'Can every wheel be repaired?', a: 'No. That’s why every wheel is assessed before any work: we tell you what’s possible before we start.' },
         { q: 'Can I choose the colour?', a: 'Yes. Published work ranges from gloss black and satin black to grey and silver. Tell us the finish you have in mind.' },
@@ -421,7 +421,7 @@ export const t = {
     configurator: {
       kicker: 'Finish studio', title: ['Choose', 'your finish.'],
       lead: 'From gloss black to lollipop red: compare finishes on the same wheel, then book your assessment.',
-      choose: 'Finishes', before: 'Before', cta: 'Quote for this finish',
+      choose: 'Finishes', before: 'Before', cta: 'This finish on WhatsApp',
       note: 'Illustrative renders generated for this demo. Real colours are shown to you at the shop.',
     },
     marquee: ['Wheel repair', 'Welding', 'Powder coating', 'Curb rash', 'Cracked wheels', 'Saint-Laurent'],
@@ -432,6 +432,7 @@ export const t = {
       sentTitle: 'Request sent', sentText: 'Requested appointment: {when}. The shop will confirm with you directly.', pending: 'to be confirmed',
       photosHeld: '{n} photo(s) kept. They’ll be sent with your request.', photosSent: '{n} photo(s) sent to the shop with request {ref}.', photosFailed: 'The photos could not be sent. You can show them at the shop.',
       finishOpener: 'I’m interested in the {f} finish.',
+      waSend: 'Also send on WhatsApp', waBooking: 'Hi RJ Welding & Wheels, request {ref}: {service}, on {when}. Sending my photos here.',
       placeholder: 'Type your message…', send: 'Send', attach: 'Add photos', close: 'Close the assistant', restart: 'Start over',
       greet: 'Hi! I’m the RJ Welding & Wheels AI assistant. Ask me about our services, or let’s request an assessment appointment together.',
       greetFinish: (f) => `Hi! Great choice: ${f}. I’ll book your assessment appointment in a few steps.`,
@@ -469,7 +470,7 @@ export const t = {
       ],
     },
     extra: {
-      tabs: { services: 'Services', tarifs: 'Pricing', delais: 'Turnaround', photos: 'Photos', finis: 'Finishes', apropos: 'About', methode: 'Method', avis: 'Reviews & contact' },
+      tabs: { services: 'Services', tarifs: 'Pricing', delais: 'Turnaround', photos: 'Photos', apropos: 'About', methode: 'Method', avis: 'Reviews & contact' },
       photosCta: 'Send photos for a quote', photosCtaShort: 'Send photos',
       times: { kicker: 'Turnaround', title: ['Fast,', 'no shortcuts.'], items: [
         { big: '1 h', label: 'Cracked or bent wheels', note: 'Repaired on the spot, same day: about 45 min to 1 h.' },

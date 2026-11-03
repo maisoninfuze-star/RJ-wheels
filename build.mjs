@@ -228,7 +228,7 @@ function configurator(lang) {
       </div>
       <p class="cf-note-line" data-cf-note aria-live="polite">${first[lang].note}</p>
       <div class="cf-actions reveal">
-        <a class="btn btn-red btn-lg magnetic" href="${routes.contact[lang]}" data-assistant data-assistant-finish="${esc(first[lang].name)}" data-cf-cta>${sparkI}<span>${C.cta}</span>${arrow}</a>
+        <a class="btn btn-red btn-lg magnetic" href="${waLink(lang, WA[lang].finish.replace('{s}', first[lang].name))}" target="_blank" rel="noopener" data-cf-cta data-wa-number="${B.whatsapp}" data-wa-tpl="${esc(WA[lang].msg.replace('{s}', WA[lang].finish))}">${waI}<span>${C.cta}</span>${arrow}</a>
       </div>
       <p class="fine cf-disclaimer">${C.note}</p>
     </div>
@@ -307,6 +307,13 @@ ${assistantShell(lang)}
 // ---------- pages ----------
 
 const money = (n, lang) => (lang === 'fr' ? `${n} $` : `$${n}`);
+// Inquiries open a WhatsApp chat with the shop, message pre-written (the visitor taps Send).
+const WA = {
+  fr: { ask: 'Demander sur WhatsApp', msg: 'Bonjour RJ Welding & Wheels, j’aimerais une soumission pour : {s}', finish: 'le fini {s} (peinture en poudre)', general: 'mes roues' },
+  en: { ask: 'Ask on WhatsApp', msg: 'Hi RJ Welding & Wheels, I’d like a quote for: {s}', finish: 'the {s} finish (powder coating)', general: 'my wheels' },
+};
+const waLink = (lang, subject) => `https://wa.me/${B.whatsapp}?text=${encodeURIComponent(WA[lang].msg.replace('{s}', subject))}`;
+const waBtn = (lang, subject, cls = 'btn btn-ghost btn-sm') => `<a class="${cls}" href="${waLink(lang, subject)}" target="_blank" rel="noopener">${waI}<span>${WA[lang].ask}</span></a>`;
 const PT = {
   fr: { title: 'Tarifs — Réparation de roues et peinture en poudre | RJ Welding & Wheels', desc: 'Prix de RJ Welding & Wheels : soudure de fissures et redressement dès 100 $ + taxes par roue, peinture en poudre dès 400 $ + taxes. Saint-Laurent, Montréal.',
     kicker: 'Tarifs', h1: ['Des prix', 'clairs.'], lead: 'Taxes en sus. Envoyez des photos de votre roue pour confirmer le prix avant de passer.',
@@ -329,23 +336,21 @@ function pricingBlocks(lang) {
         <p>${r[lang].desc}</p>
         ${r[lang].extra ? `<p class="price-extra">${r[lang].extra}</p>` : ''}
         <span class="service-when">${r[lang].when}</span>
+        <div class="price-ask">${waBtn(lang, r[lang].name)}</div>
       </div>
       <dl class="price-tags">${r.prices.map((x) => `<div><dt>${x[lang]}</dt><dd><b>${money(x.amount, lang)}</b> ${P.perWheel}</dd></div>`).join('')}</dl>
     </article>`).join('')}
   </div>
   <div class="price-group">
     <h2 class="kicker">${P.powder}</h2>
-    <div class="powder-grid">
-      <article class="price-card reveal">
-        <h3 class="display">${W.black}</h3>
-        <dl class="size-table">${PR.powder.black.map((b) => `<div><dt>${b.size}</dt><dd><b>${money(b.amount, lang)}</b> ${P.tax}</dd></div>`).join('')}</dl>
-      </article>
-      <article class="price-card reveal">
-        <h3 class="display">${W.metallic}</h3>
-        <p class="price-from">${W.from} <b>${money(PR.powder.metallicFrom, lang)}</b> ${P.tax}</p>
-        <p>${W.other}</p>
-      </article>
+    <div class="parts-grid">
+      ${[['black', W.black], ['metallic', W.metallic], ['twoTone', W.twoTone]].map(([k, name]) => `<article class="price-card reveal">
+        <h3 class="display">${name}</h3>
+        <p class="price-from"><b>${money(PR.powder[k], lang)}</b> ${P.tax}</p>
+        ${waBtn(lang, `${P.powder} — ${name}`)}
+      </article>`).join('')}
     </div>
+    <p class="price-note reveal">${W.note} ${W.other}</p>
     <p class="price-incl reveal">${W.incl}</p>
   </div>
   <div class="price-group">
@@ -355,6 +360,7 @@ function pricingBlocks(lang) {
         <h3 class="display">${x[lang].name}</h3>
         <p class="price-from"><b>${money(x.amount, lang)}</b> ${P.tax}${x[lang].unit ? ` · ${x[lang].unit}` : ''}</p>
         ${x[lang].note ? `<p class="fine">${x[lang].note}</p>` : ''}
+        ${waBtn(lang, x[lang].name)}
       </article>`).join('')}
     </div>
     <p class="fine">${P.partsNote}</p>
@@ -374,7 +380,7 @@ function pricingTeaser(lang) {
   const items = [
     [PR.repairs[0][lang].name, PR.repairs[0].prices[0].amount, P.perWheel],
     [PR.repairs[1][lang].name, PR.repairs[1].prices[0].amount, P.perWheel],
-    [PR.powder[lang].black, PR.powder.black[0].amount, P.tax],
+    [`${P.powder} · ${PR.powder[lang].black}`, PR.powder.black, P.tax],
   ];
   return `<section class="tarifs" id="tarifs" aria-labelledby="tarifs-title">
   <div class="wrap">
@@ -402,7 +408,7 @@ function ctaBand(lang) {
     <h2 id="cta-${lang}" class="display cta-title reveal"><span>${L.home.ctaTitle[0]}</span><span>${L.home.ctaTitle[1]}</span></h2>
     <p class="cta-text reveal">${L.home.ctaText}</p>
     <div class="cta-actions reveal">
-      <a class="btn btn-red btn-lg" href="${routes.contact[lang]}"><span>${L.cta.quote}</span>${arrow}</a>
+      <a class="btn btn-red btn-lg" href="${waLink(lang, WA[lang].general)}" target="_blank" rel="noopener">${waI}<span>${WA[lang].ask}</span>${arrow}</a>
       <a class="btn btn-ghost btn-lg" href="${B.phoneHref}">${phoneI}<span>${B.phone}</span></a>
     </div>
   </div>
@@ -542,7 +548,6 @@ ${pricingTeaser(lang)}
   </div>
 </section>
 
-<div id="finis">${configurator(lang)}</div>
 
 <section class="about" id="apropos" aria-labelledby="about-title">
   <div class="wrap about-grid">
@@ -643,6 +648,7 @@ function servicesPage(lang) {
     </div>
   </section>`).join('')}
 </div>
+<div id="finis">${configurator(lang)}</div>
 <section class="faq wrap" aria-labelledby="faq-title">
   <h2 id="faq-title" class="display section-title reveal">${P.faqTitle}</h2>
   <div class="faq-list">
@@ -711,7 +717,7 @@ function contactPage(lang) {
       <p class="err" id="f-photos-err" aria-live="polite"></p>
     </div>
     <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <button class="btn btn-red btn-lg" type="submit">${B.formEndpoint ? '' : B.whatsapp ? waI : ''}<span>${B.formEndpoint ? F.submitEmail : B.whatsapp ? F.submit : F.readyTitle}</span>${arrow}</button>
+    <button class="btn btn-red btn-lg" type="submit">${B.whatsapp ? waI : ''}<span>${B.whatsapp ? F.submit : B.formEndpoint ? F.submitEmail : F.readyTitle}</span>${arrow}</button>
     <p class="form-status" role="status" aria-live="polite" data-status></p>
     <div class="ready wa-steps" data-wa hidden tabindex="-1">
       <h3 class="display">${F.waTitle}</h3>

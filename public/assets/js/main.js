@@ -346,7 +346,21 @@ if (form) {
     if (form.company.value) return; // honeypot
     if (!validate()) return;
     const text = summary();
-    // Email first (api/quote.js → info@rjwheels.ca, with photos); WhatsApp is the fallback.
+    // WhatsApp first (the shop's chat opens with the request written); a copy goes
+    // to info@rjwheels.ca with the photos in the background (api/quote.js).
+    if (D.whatsapp) {
+      const url = `https://wa.me/${D.whatsapp}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank', 'noopener');
+      showWhatsAppSteps(url);
+      if (D.endpoint) {
+        const fd = new FormData(form);
+        fd.delete('photos');
+        photos.forEach((p, i) => fd.append('photos', p.file, `photo-${i + 1}.jpg`));
+        fd.append('lang', D.lang);
+        fetch(D.endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(() => {});
+      }
+      return;
+    }
     if (D.endpoint) {
       const btn = $('button[type="submit"]', form);
       btn.disabled = true; status.textContent = D.msgSending;
@@ -444,7 +458,12 @@ if (cf) {
     imgs.forEach((p) => p.classList.toggle('on', p.dataset.finishImg === b.dataset.finish));
     tag.textContent = b.dataset.name;
     note.textContent = b.dataset.note;
-    cta.dataset.assistantFinish = b.dataset.finish === 'raw' ? '' : b.dataset.name;
+    // WhatsApp message names the selected finish.
+    if (cta.dataset.waTpl) {
+      const name = b.dataset.finish === 'raw' ? '' : b.dataset.name;
+      const text = name ? cta.dataset.waTpl.replace('{s}', name) : cta.dataset.waTpl.replace(/ ?:.*$/, '');
+      cta.href = `https://wa.me/${cta.dataset.waNumber}?text=${encodeURIComponent(text)}`;
+    }
     if (focus) b.focus();
   };
   sw.forEach((b, i) => {

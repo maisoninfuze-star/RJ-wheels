@@ -182,6 +182,7 @@ function bookedCard(b, fresh) {
     <div class="as-actions">
       <a class="as-btn primary" href="${ics(b)}" download="rj-welding-wheels.ics">${esc(T.ics)}</a>
       <button type="button" class="as-btn" data-add-photos>${esc(T.addPhotos)}</button>
+      ${cfg.whatsapp ? `<a class="as-btn wa" href="https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent(fill(T.waBooking, { ref: b.ref, when: `${b.date} ${b.time}`, service: b.service + (b.finish ? ' · ' + b.finish : '') }))}" target="_blank" rel="noopener">${esc(T.waSend)}</a>` : ''}
     </div>`;
   card.querySelector('[data-add-photos]').addEventListener('click', () => fileInput.click());
   add(card);

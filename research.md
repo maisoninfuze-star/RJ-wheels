@@ -124,3 +124,5 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 - Powder coating, black wheels: 15–17″ $400, 18–20″ $450, 21–22″ $500 (+ tax). **Per wheel or per set? To confirm.** Metallic/two-tone from $600 + tax; other colours on request. Included: chemical stripping, media blasting, pre-treatment, minor curb rash repair, powder coating.
 - Other parts: brake calipers $450 + tax (set of 4), motorcycle wheels $400 + tax (set of 2), valve covers $250 + tax.
 - **Correction:** brake caliper powder coating **is** an RJ service (owner's price list), unlike the earlier note based on the 2025 Westside Customs collab.
+
+- **Update 2026-11-03 (client):** powder coating is now a single price per type: black $400, metallic $600, two-tone $700 (+ tax), with the note "the price may vary with the wheel and its size". Size tiers removed. Inquiries go to WhatsApp first (email copy to info@rjwheels.ca). **The WhatsApp number 514-466-9693 is still unconfirmed with the owner.**
