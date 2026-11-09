@@ -33,7 +33,7 @@ export const business = {
   ],
   rating: { value: '5,0', valueEn: '5.0', count: 171, seen: '2026-09' },
   // WhatsApp number that receives quote requests (digits only, with country code).
-  // CONFIRM: defaults to the shop line — the owner must confirm it is on WhatsApp (research.md §6).
+  // Confirmed by the client 2026-11-09: the shop line is on WhatsApp.
   whatsapp: '15144669693',
   // Set when the owner confirms a public email / form backend (research.md §6.3).
   // Public email; bookings and quotes are emailed here (api/_lib/mail.js, MAIL_TO).

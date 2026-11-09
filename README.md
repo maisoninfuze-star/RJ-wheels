@@ -51,7 +51,7 @@ python3 scripts/images.py # regenerate images (needs Pillow)
 ## Before launch
 1. ~~Address~~: confirmed **2640, rue Diab, H4S 1E8** (2026-10-28). Update Yellow Pages and other listings that still show 2930.
 2. Confirm the hours.
-3. Confirm the WhatsApp number (`business.whatsapp`, currently the shop line 514-466-9693) and send yourself a test request.
+3. ~~WhatsApp number~~: 514-466-9693, confirmed 2026-11-09. Send yourself a test request.
    How the quote form works: the visitor fills it in and adds up to 6 photos, which are resized in their browser. Submitting opens WhatsApp to that number with the request already written. A WhatsApp link can only carry text, so a second step sends the photos into the same chat: the phone share sheet on mobile, or drag-and-drop on desktop. Nothing is stored on a server.
    Fully automatic delivery (photos arriving without the visitor pressing Send) would need the WhatsApp Business Cloud API plus a small server.
 4. Optional: if `business.whatsapp` is set to `null`, the form falls back to `business.formEndpoint` (e.g. Formspree), then `business.email`, then a copy-the-message panel.
