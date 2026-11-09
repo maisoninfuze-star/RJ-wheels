@@ -126,3 +126,23 @@ Only posts published by **@rj_wheels**, or a collab post that credits RJ in writ
 - **Correction:** brake caliper powder coating **is** an RJ service (owner's price list), unlike the earlier note based on the 2025 Westside Customs collab.
 
 - **Update 2026-11-03 (client):** powder coating is now a single price per type: black $400, metallic $600, two-tone $700 (+ tax), with the note "the price may vary with the wheel and its size". Size tiers removed. Inquiries go to WhatsApp first (email copy to info@rjwheels.ca). **WhatsApp number 514-466-9693 confirmed by the client on 2026-11-09.**
+
+## 10. Google Business Profile check (2026-11-09)
+Source: Google Maps listing "RJ Welding & Wheels", 2640 Rue Diab (category: Soudeur spécialisé en aluminium).
+- **Rating:** 5.0 from 180 reviews (was 171 in Sept.). Updated on the site.
+- **Hours:** Mon–Fri 9:30–16:30; Sat–Sun closed. The site previously had Wed–Fri as 9:00–17:00. Updated on the site and in the assistant.
+- **Website/phone on the listing:** rjwheels.ca · (514) 466-9693. These match.
+- **Review themes** (about 150 reviews read; shown on the site as paraphrased themes, not quotes):
+  - Repaired on the spot, often 30–45 min.
+  - Fair or competitive prices.
+  - The team shows before/after.
+  - Wheels look new.
+  - Brands mentioned include BMW, Tesla, Mercedes/AMG.
+- **Tire handling:** several reviews describe the shop removing the tire, repairing, then remounting and balancing it. This is consistent with the owner's "with tire" price. Added an FAQ entry ("no need to remove the tire").
+- **Not published; ask the owner:**
+  - **Names:** reviews name Jitesh (also "Mr. Patel") and Bhavik/Vik. Confirm the owner name and whether to show it.
+  - **Warranty:** one review says the shop "offre une garantie en cas de problème". This needs owner wording before any warranty claim.
+  - **Walk-ins:** several reviews say they were served without an appointment. The site still says "call before coming"; ask whether to advertise walk-ins.
+  - **Other services:** calipers, and custom welding/fabrication (one review: display stands for a boutique). Not listed as services.
+  - **Negative reviews:** 2 of the reviews are negative (1★). There's no action for the site; the owner responds on Google.
+- **Review excerpts:** to show real quotes, get the owner's OK and add them to `reviews` in `src/content.mjs`. The themes block is replaced automatically.

@@ -595,6 +595,7 @@ ${pricingTeaser(lang)}
           <b>${lang === 'fr' ? B.rating.value : B.rating.valueEn}</b><span class="stars" aria-hidden="true">★★★★★</span>
           <span>${B.rating.count} ${X.visit.reviewsOf}</span><small>${L.ratingSeen}</small>
         </a>
+        ${!reviews.length && X.visit.themes ? `<div class="review-themes"><p class="kicker">${X.visit.themesTitle}</p><ul>${X.visit.themes.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>` : ''}
         ${reviews.length ? `<div class="review-list">${reviews.map((r) => `<figure class="review"><span class="stars" aria-hidden="true">${'★'.repeat(r.stars || 5)}</span><blockquote>${esc(r.text)}</blockquote><figcaption>${esc(r.name)} · Google</figcaption></figure>`).join('')}</div>` : ''}
         <a class="btn btn-ghost" href="${B.mapsUrl}" target="_blank" rel="noopener"><span>${X.visit.reviewsBtn}</span>${ext}</a>
       </div>
