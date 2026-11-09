@@ -2,7 +2,7 @@
 // Body: { lang: 'fr'|'en', messages: Anthropic.Beta.BetaMessageParam[] }
 // The client keeps the conversation and sends it back each turn (append-only;
 // the server returns the updated history, including Claude's own blocks).
-// Env: ANTHROPIC_API_KEY (required), RESEND_API_KEY + MAIL_FROM (for bookings).
+// Env: ANTHROPIC_API_KEY (required), SMTP_PASS (Spacemail mailbox, for bookings).
 import Anthropic from '@anthropic-ai/sdk';
 import { json, clientIp, sameOrigin, rateLimit } from './_lib/guard.js';
 import { systemPrompt, todayMontreal, availableSlots, isBookableSlot } from './_lib/site.js';
